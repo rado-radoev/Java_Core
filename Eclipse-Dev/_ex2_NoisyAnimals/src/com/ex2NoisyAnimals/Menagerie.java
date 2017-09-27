@@ -14,9 +14,10 @@ public class Menagerie {
 		// create dog objects
 		GermanShepard germanShepard = new GermanShepard();
 		BrusselsGriffon brusselsGriffon = new BrusselsGriffon();
+		BrusselsGriffon tobby = new BrusselsGriffon("Tobby");
 		
 		// instantiate the animals array
-		animals = new Animal[4];
+		animals = new Animal[5];
 		
 		// add cats and dogs to animals array
 		animals[0] = britisShorthair;
@@ -24,6 +25,7 @@ public class Menagerie {
 		
 		animals[2] = germanShepard;
 		animals[3] = brusselsGriffon;
+		animals[4] = tobby;
 		
 		// loop through animals array and display
 		for (int i = 0; i < animals.length; i++) {
