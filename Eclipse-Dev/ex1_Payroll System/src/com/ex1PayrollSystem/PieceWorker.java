@@ -1,5 +1,7 @@
 package com.ex1PayrollSystem;
 
+import com.PayrollSystem.Employee;
+
 public class PieceWorker extends Employee {
 
 	private double wage; // wage per piece

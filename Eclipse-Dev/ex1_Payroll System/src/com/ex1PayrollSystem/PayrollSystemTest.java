@@ -1,4 +1,12 @@
 package com.ex1PayrollSystem;
+
+//https://stackoverflow.com/questions/12287146/accessing-referenced-libraries-from-packages-in-eclipse
+
+import com.PayrollSystem.Employee;
+import com.PayrollSystem.BasePlusCommissionEmployee;
+import com.PayrollSystem.CommissionEmployee;
+import com.PayrollSystem.HourlyEmployee;
+import com.PayrollSystem.SalariedEmployee;
 // Fig. 10.9: PayrollSystemTest.java
 // Employee hierarchy test program.
 
