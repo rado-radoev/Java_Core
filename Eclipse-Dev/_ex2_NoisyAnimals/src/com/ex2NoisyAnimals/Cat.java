@@ -3,8 +3,8 @@ package com.ex2NoisyAnimals;
 public class Cat extends Animal {
 
 	@Override
-	public void vocalize() {
-		// TODO Auto-generated method stub
+	public String vocalize() {
+		return String.format("meaow meaow%n");
 		
 	}
 

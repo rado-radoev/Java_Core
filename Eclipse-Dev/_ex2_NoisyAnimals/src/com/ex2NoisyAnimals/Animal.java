@@ -5,5 +5,5 @@ package com.ex2NoisyAnimals;
 public abstract class Animal {
 
 	// Make sound
-	public abstract void vocalize();
+	public abstract String vocalize();
 }
