@@ -1,4 +1,4 @@
-package com.ex2NoisyAnimals;
+package com.ex2_NoisyAnimals;
 
 public class Persian extends Cat {
 	

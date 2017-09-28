@@ -1,14 +1,14 @@
-package com.ex2NoisyAnimals;
+package com.ex2_NoisyAnimals;
 
-public class Dog extends Animal {
-	
+public class Cat extends Animal {
+
 	private String name;
 	
-	public Dog() {
+	public Cat() {
 		this("");
 	}
 	
-	public Dog(String name) {
+	public Cat(String name) {
 		setName(name);
 	}
 	
@@ -24,10 +24,10 @@ public class Dog extends Animal {
 		
 		this.name = name;
 	}
-
+	
 	@Override
 	public String vocalize() {
-		return String.format("barf barf%n");
+		return String.format("meaow meaow%n");
 		
 	}
 

@@ -1,12 +1,12 @@
-package com.ex2NoisyAnimals;
+package com.ex2_NoisyAnimals;
 
-public class GermanShepard extends Dog {
+public class BrusselsGriffon extends Dog {
 	
-	public GermanShepard() {
+	public BrusselsGriffon() {
 		super();
 	}
 	
-	public GermanShepard(String name) {
+	public BrusselsGriffon(String name) {
 		super(name);
 	}
 
