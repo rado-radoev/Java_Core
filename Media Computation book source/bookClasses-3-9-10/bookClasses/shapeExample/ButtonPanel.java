@@ -16,7 +16,6 @@ public class ButtonPanel extends Panel
   
   private Button rectButton;  // rectangle button
   private Button ovalButton;  // oval button
-  private Button lineButton;  // line button
   private Button clearButton;  // clear button
   private ShapeInterface handler = null; // the shape interface handler
   
@@ -63,16 +62,6 @@ public class ButtonPanel extends Panel
       public void actionPerformed (ActionEvent e) {
         if (handler != null)
           handler.setShape(Shape.OVAL);
-      }
-    });
-    
-    // create the oval button
-    lineButton = new Button("Line");
-    add(lineButton);
-    lineButton.addActionListener(new ActionListener() {
-      public void actionPerformed (ActionEvent e) {
-        if (handler != null)
-          handler.setShape(Shape.LINE);
       }
     });
     

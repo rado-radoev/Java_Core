@@ -2,15 +2,16 @@ import java.awt.*;
 
 /**
  * Class Rectangle:  inherits from Shape and draws a rectangle
+ * Copyright Georgia Institute of Technology 2007
  * @author Barb Ericson
  */
-public class Rectangle extends Shape
+public class RectangleShape extends AbstractShape
 {
   
   ///////////////////// Constructors /////////////////////////////
   
   /** No argument constructor */
-  public Rectangle ()
+  public RectangleShape ()
   {
     super();  // use parent's no arg constructor
   }
@@ -20,7 +21,7 @@ public class Rectangle extends Shape
    * @param firstPoint   first point used in defining the shape
    * @param secondPoint  second point used in defining the shape
    */
-  public Rectangle (Point firstPoint, Point lastPoint)
+  public RectangleShape (Point firstPoint, Point lastPoint)
   {
     super(firstPoint,lastPoint); // use shape constructor
   }
@@ -32,7 +33,7 @@ public class Rectangle extends Shape
    * @param x2    x value of the second point that defines the shape
    * @param y2    y value of the second point that defines the shape
    */
-  public Rectangle (int x1, int y1, int x2, int y2)
+  public RectangleShape (int x1, int y1, int x2, int y2)
   {
     super(x1,y1,x2,y2);  // use shape constructor
   }

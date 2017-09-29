@@ -84,13 +84,15 @@ public class Picture extends SimplePicture
     return output;
     
   }
- 
+  
+  
   public static void main(String[] args) 
   {
      String fileName = FileChooser.pickAFile();
      Picture pictObj = new Picture(fileName);
      pictObj.explore();
   }
+  
   
 } // this } is the end of class Picture, put all new methods before this
  

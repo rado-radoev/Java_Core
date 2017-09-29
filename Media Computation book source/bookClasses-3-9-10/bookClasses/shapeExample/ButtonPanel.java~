@@ -89,7 +89,7 @@ public class ButtonPanel extends Panel
     // add the buttonPanel to the frame
     frame.add(buttonPanel);
     frame.pack(); // shrink to fit preferred size
-    frame.setVisible(true); // show the frame
+    frame.show(); // show the frame
   }
   
 }

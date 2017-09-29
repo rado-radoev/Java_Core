@@ -19,7 +19,7 @@ public class RectangleShape extends AbstractShape
   /**
    * Constructor that takes two points to define the shape
    * @param firstPoint   first point used in defining the shape
-   * @param lastPoint  second point used in defining the shape
+   * @param lastPoint  last point used in defining the shape
    */
   public RectangleShape (Point firstPoint, Point lastPoint)
   {
