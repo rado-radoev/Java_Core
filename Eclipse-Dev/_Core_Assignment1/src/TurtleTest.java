@@ -4,47 +4,27 @@ public class TurtleTest {
 	public static void main(String[] args) {
 		World world = new World();
 		
-		Turtle turtle = new Turtle(50, 50, world);
+		Turtle turtle = new Turtle(world);
 		turtle.setName("Jane");
 		
-		turtle.drawRectangle(150, 200);
+		turtle.drawStart();
+		//turtle.drawFunnyShapes();
 		
-		turtle.moveTo(200, 200);
+		//turtle.drawRectangle(200, 100);;
+		turtle.center();
 		
-		turtle.drawHexagon(60);
+		//turtle.drawHexagon(60);
 		
-		// draw square with upper left corner at 50 50 
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		
-//		// lift the pen so we don't draw when moving
-//		turtle.penUp();
-//	
-//		
-//		// move the turtle and put the pen down, ready to draw
-//		turtle.moveTo(200, 200);
-//		turtle.penDown();
-//		
-//		// draw square with upper left corner at 200 200
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		turtle.turnRight();
-//		turtle.forward(30);
-//		
+		turtle.penUp();
+		turtle.moveTo(100, 100);
+		turtle.penDown();
 		
-		
-		
-		System.out.println(turtle);
+		//turtle.drawPentagon(60);
+
+		turtle.penUp();
+		turtle.center();
+		turtle.penDown();
+
 	}
 
 }

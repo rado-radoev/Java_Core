@@ -59,49 +59,133 @@ public class Turtle extends SimpleTurtle
   
   /////////////////// methods ///////////////////////
 
-  public static void main(String[] args)
-  {
-    World earth = new World();
-    Turtle t1 = new Turtle(earth);
-    t1.forward();
+//  public static void main(String[] args)
+//  {
+//    World earth = new World();
+//    Turtle t1 = new Turtle(earth);
+//    t1.forward();
+//  }
+  
+  public void center() {
+	  ModelDisplay displayModel = this.getModelDisplay();
+	  this.penUp();
+	  
+  	  this.moveTo(displayModel.getWidth() /2 , 
+		  displayModel.getHeight() / 2);
+
+	  this.penDown();
   }
 
+  /**
+   * Method to draw a rectangle
+   * @param width the width of the rectangle
+   * @param height the height of the rectangle
+   */
   public void drawRectangle(int width, int height) {
-	   this.turnRight();
-	   this.forward(width);
-	   this.turnRight();
-	   this.forward(height);
-	   this.turnRight();
-	   this.forward(width);
-	   this.turnRight();
-	   this.forward(height);
-  }
+	  // Rectangle has 4 sides so we need to iterate 4 times
+	  // turn right with each iteration
+	  // if in even iteration, draw height
+	  // if in odd iteration, drawing width
+	  
+	  for (int i = 1; i <= 4; i++) {
+		  this.turnRight(); 
+		  if (i % 2 == 0) {
+			  this.forward(height);
+		  }
+		  else {
+			   this.forward(width); 
+		  }
+	  }
+}
   
+  /**
+   * Method to draw hexagon
+   * @param length the length of the heagon's sides
+   */
   public void drawHexagon(int length) {
-	  this.turn(30);
-	  this.forward(length);
-	  this.turn(30);
-	  this.forward(length);
-	  this.turn(30);
-	  this.forward(length);
-	  this.turn(30);
-	  this.forward(length);
-	  this.turn(30);
-	  this.forward(length);
-	  this.turn(30);
-	  this.forward(length);
-	  
+	 drawPolygonHelper(length, 5);
+  }
+ 
+  /**
+   * Method to draw pentagon
+   * @param length the length of the pentagon's sides
+   */
+  public void drawPentagon(int length) {
+	  drawPolygonHelper(length, 6);
   }
   
-  public void drawPentagon(int length) {
+  /**
+   * Method that draws a star
+   */
+  public void drawStart() {
+	  for (int i = 0; i < 20; i++) {
+		  this.forward(i * 5);
+		  this.turn(144);
+	  }
+  }
+  
+  /**
+   * Method that draws funnyShapes
+   */
+  public void drawFunnyShapes() {
+	  for (int i = 0; i < 50; i++) {
+		  this.forward(150);
+		  this.turn(-123);
+	  }
 	  
+	  Color currentColor = this.getBodyColor();
+	  this.setBodyColor(Color.ORANGE);
+	  for (int i = 0; i < 50; i++) {
+		  this.forward(50);
+		  this.turn(150);
+	  }
+	  this.setBodyColor(currentColor);
+  }
+  
+  /**
+   * Helper method that draws polygon shapes
+   * @param length the polygon sides length
+   * @param sides how many sides the polygon has
+   */
+  private void drawPolygonHelper(int length, int sides) {
+  	  // Start drawing the polygon
+	  
+	  // Get the current turtle X position; this is the pivot point
+	  int circleX = this.getXPos();
+	  
+	  // the radius of the circle is the provided length
+	  int radius = length;
+	  
+	  // Move the turtle to the 1st point with pen up
+	  // This is required so the turtle doesn't start drawing from the middle of the circle
+	  this.penUp();
+	  this.moveTo((int)(circleX + radius * Math.cos(2.0 * Math.PI * 0/sides)), 
+	  		(int)(circleX + radius * Math.sin(2.0 * Math.PI * 0/sides)));
+	  this.penDown();
+	  
+	  // The real drawing starts here 
+	  for (int i = 1; i <= sides; i++) {
+		  int xx = (int)(circleX + radius * Math.cos(2.0 * Math.PI * i/sides));
+		  int xy = (int)(circleX + radius * Math.sin(2.0 * Math.PI * i/sides));
+		  
+		  this.moveTo(xx, xy);
+	  }
   }
   
   
 } // this } is the end of class Turtle, put all new methods before this
 
+// The easy way to draw Hexagon
+//for (int i = 0 ; i < 6; i++) {
+//	  this.forward(length);
+//	  this.turn(60);
+//}
 
-
+// The easy way to draw Pentagon
+//for (int i = 0; i < 5; i++) {
+//this.forward(length);
+//this.turn(72);
+//}
 
 
 
