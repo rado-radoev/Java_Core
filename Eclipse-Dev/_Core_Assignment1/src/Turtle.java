@@ -65,7 +65,11 @@ public class Turtle extends SimpleTurtle
 //    Turtle t1 = new Turtle(earth);
 //    t1.forward();
 //  }
+ 
   
+  /**
+   * Method that puts the turtle in the center of the screen
+   */
   public void center() {
 	  ModelDisplay displayModel = this.getModelDisplay();
 	  this.penUp();
@@ -75,7 +79,29 @@ public class Turtle extends SimpleTurtle
 
 	  this.penDown();
   }
+  
+  /**
+   * Method to draw an arrow
+   * @param length
+   */
+  public void drawArrow(int length) {
+	  this.moveTo(100, 100);
+	  this.turnRight();
+	  this.forward(length);
+	  this.turn(120);
+	  this.forward(length);
+	  this.turn(120);
+	  this.forward(length);
+  }
 
+  /**
+   * Method to draw equilateral triangle
+   * @param length
+   */
+  public void drawTriangle(int length) {
+	  drawPolygonHelper(length, 3);
+  }
+  
   /**
    * Method to draw a rectangle
    * @param width the width of the rectangle
@@ -142,6 +168,17 @@ public class Turtle extends SimpleTurtle
 	  this.setBodyColor(currentColor);
   }
   
+  private boolean outOfBoundCheck(int posX, int posY) {
+	  ModelDisplay displayMode = this.getModelDisplay();
+	  int maxHeight = displayMode.getHeight();
+	  int maxWidth = displayMode.getWidth();
+	  
+	  if (this.getXPos() > maxWidth || this.getYPos() > maxHeight)
+		  return false;
+	  else
+		  return true;
+  }
+  
   /**
    * Helper method that draws polygon shapes
    * @param length the polygon sides length
@@ -152,6 +189,7 @@ public class Turtle extends SimpleTurtle
 	  
 	  // Get the current turtle X position; this is the pivot point
 	  int circleX = this.getXPos();
+	  int circleY = this.getYPos();
 	  
 	  // the radius of the circle is the provided length
 	  int radius = length;
@@ -159,14 +197,14 @@ public class Turtle extends SimpleTurtle
 	  // Move the turtle to the 1st point with pen up
 	  // This is required so the turtle doesn't start drawing from the middle of the circle
 	  this.penUp();
-	  this.moveTo((int)(circleX + radius * Math.cos(2.0 * Math.PI * 0/sides)), 
-	  		(int)(circleX + radius * Math.sin(2.0 * Math.PI * 0/sides)));
+	  this.moveTo((int)(circleX + radius * Math.cos(2.0 * Math.PI * 0)), 
+	  		(int)(circleY + radius * Math.sin(2.0 * Math.PI * 0)));
 	  this.penDown();
 	  
 	  // The real drawing starts here 
 	  for (int i = 1; i <= sides; i++) {
 		  int xx = (int)(circleX + radius * Math.cos(2.0 * Math.PI * i/sides));
-		  int xy = (int)(circleX + radius * Math.sin(2.0 * Math.PI * i/sides));
+		  int xy = (int)(circleY + radius * Math.sin(2.0 * Math.PI * i/sides));
 		  
 		  this.moveTo(xx, xy);
 	  }
