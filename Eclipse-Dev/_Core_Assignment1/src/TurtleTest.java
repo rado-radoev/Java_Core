@@ -7,9 +7,9 @@ public class TurtleTest {
 		Turtle turtle = new Turtle(world);
 		turtle.setName("Jane");
 
-		turtle.drawArrow(100);
+//		turtle.drawArrow(1500);
 		
-//		turtle.drawTriangle(130);
+		turtle.drawTriangle(130);
 		
 //		turtle.drawStart();
 //		turtle.drawFunnyShapes();

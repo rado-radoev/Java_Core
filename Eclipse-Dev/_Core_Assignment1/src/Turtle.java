@@ -97,8 +97,10 @@ public class Turtle extends SimpleTurtle
   /**
    * Method to draw equilateral triangle
    * @param length
+   * @throws IllegalArgumentException
    */
-  public void drawTriangle(int length) {
+
+  public void drawTriangle(int length) throws IllegalArgumentException {
 	  drawPolygonHelper(length, 3);
   }
   
@@ -106,20 +108,24 @@ public class Turtle extends SimpleTurtle
    * Method to draw a rectangle
    * @param width the width of the rectangle
    * @param height the height of the rectangle
+   * @throws IllegalArgumentException
    */
-  public void drawRectangle(int width, int height) {
+  public void drawRectangle(int width, int height) throws IllegalArgumentException {
 	  // Rectangle has 4 sides so we need to iterate 4 times
 	  // turn right with each iteration
 	  // if in even iteration, draw height
 	  // if in odd iteration, drawing width
 	  
 	  for (int i = 1; i <= 4; i++) {
-		  this.turnRight(); 
-		  if (i % 2 == 0) {
-			  this.forward(height);
-		  }
-		  else {
-			   this.forward(width); 
+		  if (!outOfBoundCheck())
+		  {
+			  this.turnRight(); 
+			  if (i % 2 == 0) {
+				  this.forward(height);
+			  }
+			  else {
+				   this.forward(width); 
+			  }	  
 		  }
 	  }
 }
@@ -127,53 +133,73 @@ public class Turtle extends SimpleTurtle
   /**
    * Method to draw hexagon
    * @param length the length of the heagon's sides
+   * @throws IllegalArgumentException   
    */
-  public void drawHexagon(int length) {
+  public void drawHexagon(int length) throws IllegalArgumentException {
 	 drawPolygonHelper(length, 5);
   }
  
   /**
    * Method to draw pentagon
    * @param length the length of the pentagon's sides
+   * @throws IllegalArgumentException
    */
-  public void drawPentagon(int length) {
+  public void drawPentagon(int length) throws IllegalArgumentException {
 	  drawPolygonHelper(length, 6);
   }
   
   /**
    * Method that draws a star
+   * @throws IllegalArgumentException
    */
-  public void drawStart() {
+  public void drawStart() throws IllegalArgumentException {
 	  for (int i = 0; i < 20; i++) {
-		  this.forward(i * 5);
-		  this.turn(144);
+		  if (outOfBoundCheck()) {
+			  this.forward(i * 5);
+			  this.turn(144);
+		  }
 	  }
   }
   
   /**
    * Method that draws funnyShapes
+   * @throws IllegalArgumentException
    */
-  public void drawFunnyShapes() {
+  public void drawFunnyShapes() throws IllegalArgumentException {
 	  for (int i = 0; i < 50; i++) {
-		  this.forward(150);
-		  this.turn(-123);
+		  if (!outOfBoundCheck()) {
+			  this.forward(150);
+			  this.turn(-123);
+		  }
+		  else {
+			  throw new IllegalArgumentException("Tutle cannot move out of the window border");
+		  }
 	  }
 	  
 	  Color currentColor = this.getBodyColor();
 	  this.setBodyColor(Color.ORANGE);
 	  for (int i = 0; i < 50; i++) {
-		  this.forward(50);
-		  this.turn(150);
+		  if (!outOfBoundCheck()) {
+			  this.forward(50);
+			  this.turn(150);
+		  }
+		  else {
+			  throw new IllegalArgumentException("Tutle cannot move out of the window border");
+		  }
 	  }
 	  this.setBodyColor(currentColor);
   }
   
-  private boolean outOfBoundCheck(int posX, int posY) {
+  /**
+   * Method that checks if turtle move will be outside the borders of the frame
+   * @return boolean if the turtle is currently out the frames's limit
+   */
+  private boolean outOfBoundCheck() {
 	  ModelDisplay displayMode = this.getModelDisplay();
 	  int maxHeight = displayMode.getHeight();
 	  int maxWidth = displayMode.getWidth();
 	  
-	  if (this.getXPos() > maxWidth || this.getYPos() > maxHeight)
+	  if (this.getXPos() > maxHeight || this.getYPos() > maxWidth)
 		  return false;
 	  else
 		  return true;
@@ -183,8 +209,9 @@ public class Turtle extends SimpleTurtle
    * Helper method that draws polygon shapes
    * @param length the polygon sides length
    * @param sides how many sides the polygon has
+   * @throws IllegalArgumentException
    */
-  private void drawPolygonHelper(int length, int sides) {
+  private void drawPolygonHelper(int length, int sides) throws IllegalArgumentException {
   	  // Start drawing the polygon
 	  
 	  // Get the current turtle X position; this is the pivot point
@@ -206,7 +233,13 @@ public class Turtle extends SimpleTurtle
 		  int xx = (int)(circleX + radius * Math.cos(2.0 * Math.PI * i/sides));
 		  int xy = (int)(circleY + radius * Math.sin(2.0 * Math.PI * i/sides));
 		  
-		  this.moveTo(xx, xy);
+		  if (!outOfBoundCheck()) {
+			  this.moveTo(xx, xy); 
+		  }
+		  else {
+			  throw new IllegalArgumentException("Tutle cannot move out of the window border");
+		  }
+		  
 	  }
   }
   
