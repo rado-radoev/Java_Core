@@ -94,13 +94,62 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Mehod to clear blue from the picture
+   * (set the blue to 0 for all pixels)
+   */
+  public void clearBlue( ) {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int index = 0;
+	  
+	  // loop through all the pixels
+	  while (index < pixelArray.length) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[index];
+		  
+		  // set the blue on the pixel to 0
+		  pixel.setBlue(0);
+		  
+		  index++;
+	  }
+  }
+  
+  /**
+   * Method to increase the amount of red by 30%
+   */
+  public void increaseRed() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int value, index = 0;
+	  
+	  // loop through all the pixels
+	  while (index < pixelArray.length) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[index];
+		  
+		  // get the value or red
+		  value = pixel.getRed();
+		  
+		  // change the value to 1.3 time it was
+		  value = (int) (value * 1.3);
+		  
+		  // set the new red value to 1.3 times it was
+		  pixel.setRed(value);
+		  
+		  // increment index
+		  index++;
+	  }
+  }
+  
+  /**
    * Method to decrease the red by half in the current picture
    */
   public void decreaseRedHalf() {
 	  Pixel[] pixelArray = this.getPixels();
-	  Pixel pixel = null;
-	  int value = 0;
-	  int index = 0;
+	  Pixel pixel;
+	  int value, index = 0;
 	  
 	  // loop through all the pixels
 	  while (index < pixelArray.length) {

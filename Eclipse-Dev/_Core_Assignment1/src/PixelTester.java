@@ -5,8 +5,9 @@ public class PixelTester {
 	public static void main(String[] args) {
 		String fileName = "/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/caterpillar.jpg";
 		Picture picture = new Picture(fileName);
-		picture.decreaseRedHalf();
+		picture.clearBlue();
 		picture.show();
+		
 	}
 	
 	public static void testMethod5() {
