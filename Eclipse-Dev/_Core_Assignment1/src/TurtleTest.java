@@ -3,13 +3,17 @@ public class TurtleTest {
 	
 	public static void main(String[] args) {
 		World world = new World();
+
+		SpiralTurtle spiralTurtle = new SpiralTurtle(world);
 		
-		Turtle turtle = new Turtle(world);
-		turtle.setName("Jane");
+		spiralTurtle.draw();
+		
+//		Turtle turtle = new Turtle(world);
+//		turtle.setName("Jane");
 
 //		turtle.drawArrow(1500);
 		
-		turtle.drawTriangle(130);
+//		turtle.drawTriangle(130);
 		
 //		turtle.drawStart();
 //		turtle.drawFunnyShapes();

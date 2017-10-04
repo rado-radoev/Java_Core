@@ -65,6 +65,14 @@ public class Turtle extends SimpleTurtle
 //    Turtle t1 = new Turtle(earth);
 //    t1.forward();
 //  }
+  
+  public void draw() {
+	  
+  }
+  
+  public void drawColor(Color color) {
+	  
+  }
  
   
   /**
