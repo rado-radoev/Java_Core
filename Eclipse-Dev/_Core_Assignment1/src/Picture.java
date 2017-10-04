@@ -116,6 +116,26 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Mehod to clear blue from the picture (shorter)
+   * (set the blue to 0 for all pixels)
+   */
+  public void clearBlue2( ) {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int i = 0;
+	  
+	  // loop through all the pixels
+	  while (i < pixelArray.length) {
+		  
+		  // get and set the blue pixel to 0
+		  pixelArray[i].setBlue(0);
+		  
+		  // increment index
+		  i++;
+	  }
+  }
+  
+  /**
    * Method to increase the amount of red by 30%
    */
   public void increaseRed() {
@@ -188,7 +208,158 @@ public class Picture extends SimplePicture
 			pixel.setRed(value);
 		}
 	}
-  
+	
+	/**
+	 * Method to simulate a sunset by decreasing the green and blue
+	 */
+	public void makeSunset() {
+		Pixel[] pixelArray = this.getPixels();
+		Pixel pixel;
+		int value, i = 0;
+		
+		// loop through all the pixels
+		while (i < pixelArray.length) {
+			// get the current pixel
+			pixel = pixelArray[i];
+			
+			// change the blue value
+			value = pixel.getBlue();
+			pixel.setBlue((int) (value * 0.7));
+			
+			// change the green value
+			value = pixel.getGreen();
+			pixel.setGreen((int) (value * 0.7));
+			
+			// increment the index
+			i++;
+		}
+	}
+	
+	/**
+	 * Method to change the red by an amount
+	 * @param amount the amount to change the red by
+	 */
+	public void changeRed(double amount) {
+		Pixel[] pixelArray =  getPixels();
+		Pixel pixel;
+		int value, i = 0;
+		
+		// loop through all the pixels
+		while (i < pixelArray.length) {
+			// get the current pixel
+			pixel = pixelArray[i];
+				
+			// change the green value
+			value = pixel.getRed();
+			pixel.setRed((int) (value * amount));
+			
+			// increment the index
+			i++;
+		}
+	}
+	
+	/**
+	 * Method to reduce green in picture by 30%
+	 */
+	public void decreaseGreen() {
+		Pixel[] pixelArray =  getPixels();
+		Pixel pixel;
+		int value, i = 0;
+		
+		// loop through all the pixels
+		while (i < pixelArray.length) {
+			// get the current pixel
+			pixel = pixelArray[i];
+				
+			// change the green value
+			value = pixel.getGreen();
+			pixel.setGreen((int) (value * 0.7));
+			
+			// increment the index
+			i++;
+		}
+	}
+	
+	/**
+	 * Method to reduce blue in picture by 30%
+	 */
+	public void decreaseBlue() {
+		Pixel[] pixelArray =  getPixels();
+		Pixel pixel;
+		int value, i = 0;
+		
+		// loop through all the pixels
+		while (i < pixelArray.length) {
+			// get the current pixel
+			pixel = pixelArray[i];
+				
+			// change the blue value
+			value = pixel.getBlue();
+			pixel.setBlue((int) (value * 0.7));
+			
+			// increment the index
+			i++;
+		}
+	}
+	
+	public void makeSunset2() {
+		decreaseBlue();
+		decreaseGreen();
+	}
+	
+	/**
+	 * Method to change the color of each pixel in the picture object
+	 * by passed in amounts
+	 * @param redAmount the amount to change the red value
+	 * @param greenAmount the amount to change the green value
+	 * @param blueAmount the amount to change the blue value
+	 */
+	public void changeColors(double redAmount,
+							double greenAmount,
+							double blueAmount) {
+		
+		Pixel[] pixelArray =  getPixels();
+		Pixel pixel;
+		int value, i = 0;
+		
+		// loop through all the pixels
+		while (i < pixelArray.length) {
+			// get the current pixel
+			pixel = pixelArray[i];
+				
+			// change the red value
+			value = pixel.getRed();
+			pixel.setRed((int) (value * redAmount));
+			
+			// change the blue value
+			value = pixel.getGreen();
+			pixel.setGreen((int) (value * greenAmount));
+			
+			// change the blue value
+			value = pixel.getBlue();
+			pixel.setBlue((int) (value * blueAmount));
+			
+			// increment the index
+			i++;
+		}
+	}
+	
   
 } // this } is the end of class Picture, put all new methods before this
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
