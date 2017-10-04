@@ -242,6 +242,104 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to clear red from the picture
+   * (set the red to 0 for all pixels)
+   */
+  public void clearRed() {
+	  Pixel[] pixelArray = getPixels();
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixelArray[i].setRed(0);
+	}
+  }
+  
+  
+  /**
+   * Method to clear green from the picture
+   * (set the green to 0 for all pixels)
+   */
+  public void clearGreen() {
+	  Pixel[] pixelArray = getPixels();
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixelArray[i].setGreen(0);
+	}
+  }
+  
+  /**
+   * Method to maximize red color
+   */
+  public void maximizeRed() {
+	  Pixel[] pixelArray = getPixels();
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixelArray[i].setRed(255);
+	}
+  }
+  
+  /**
+   * Method to maximize green color
+   */
+  public void maximizeGreen() {
+	  Pixel[] pixelArray = getPixels();
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixelArray[i].setGreen(255);
+	}
+  }
+  
+  /**
+   * Method to maximize blue color
+   */
+  public void maximizeBlue() {
+	  Pixel[] pixelArray = getPixels();
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixelArray[i].setBlue(255);
+	}
+  }
+  
+  public void modifyRGB(double redAmount, 
+		  double greenAmount, 
+		  double blueAmount) {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  
+	  for (int i = 0; i < pixelArray.length; i++) {
+		pixel = pixelArray[i];
+		pixel.setRed((int) (pixel.getRed() * redAmount));
+		pixel.setGreen((int) (pixel.getGreen() * greenAmount));
+		pixel.setBlue((int) (pixel.getBlue() * blueAmount));
+	}
+  }
+
+  /**
+   * Method to leave only red color
+   */
+  public void onlyRed() {
+	  clearGreen();
+	  clearBlue();
+  }
+  
+  
+  /**
+   * Method to leave only green color
+   */
+  public void onlyGreen() {
+	  clearBlue();
+	  clearRed();
+  }
+  
+  /**
+   * Method to leave only blue color
+   */
+  public void onlyBlue() {
+	  clearGreen();
+	  clearRed();
+  }
+  
+  
+  /**
    * Mehod to clear blue from the picture (shorter)
    * (set the blue to 0 for all pixels)
    */
