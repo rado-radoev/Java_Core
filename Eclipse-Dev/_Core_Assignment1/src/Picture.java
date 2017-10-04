@@ -116,6 +116,132 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to change the picture to grayscale with luminance
+   */
+  
+  public void grayscaleWithLuminance() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int luminance = 0;
+	  double redValue, greenValue, blueValue = .0;
+	  
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the corrected red, green and blue values
+		  redValue = pixel.getRed() * .299;
+		  greenValue = pixel.getGreen() * .587;
+		  blueValue = pixel.getBlue() * .114;
+		  
+		  // compute the intensity of the pixel (average value)
+		  luminance = (int) (redValue + greenValue + blueValue);
+		  
+		  // set the pixel color to the new color
+		  pixel.setColor(new Color(luminance, luminance, luminance));
+	}
+  }
+  
+  /**
+   * Method to change the picture to grayscale 
+   */
+  public void grayscale() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int intensity = 0;
+	  
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // compute the intensity of the pixel (average value)
+		  intensity = (int) ((pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
+		  
+		  // set the pixel color to the new color
+		  pixel.setColor(new Color(intensity, intensity, intensity));
+	}
+  }
+  
+  /**
+   * Method to lighten the colors in the picture
+   */
+  public void lighten() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  Color color;
+	  
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the current color
+		  color = pixel.getColor();
+		  
+		  // get a lighter color
+		  color = color.brighter();
+		  
+		  // set the pixel color to the lighter color
+		  pixel.setColor(color);
+	  }
+  }
+  
+  /**
+   * Method to darken the picture
+   */
+  public void darken() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  Color color;
+	  
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the current color
+		  color = pixel.getColor();
+		  
+		  // get a lighter color
+		  color = color.darker();
+		  
+		  // set the pixel color to the lighter color
+		  pixel.setColor(color);
+	  } 
+  }
+  
+  /**
+   * Method to negate the picture
+   */
+  public void negate() {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel pixel;
+	  int redValue, greenValue, blueValue = 0;
+	  
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the current red, green, blue value
+		  redValue = pixel.getRed();
+		  greenValue = pixel.getGreen();
+		  blueValue = pixel.getBlue();
+		  
+		  // set the pixel's color to the new color
+		  pixel.setColor(new Color(255 - redValue, 
+	  							   255 - greenValue,
+	  							   255 - blueValue));
+	  }
+  }
+  
+  /**
    * Mehod to clear blue from the picture (shorter)
    * (set the blue to 0 for all pixels)
    */
