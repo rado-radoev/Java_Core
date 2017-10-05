@@ -94,6 +94,112 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to mirror around a horizontal line in the middle
+   * based on the height. It copies the bottom mirrored to the top
+   */
+  public void mirrorHorizontalBottomToTop() {
+	  int height = getHeight();
+	  int mirrorPoint = height / 2;
+	  Pixel topPixel, bottomPixel;
+	  
+	  // loop through all the columns
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through all the rows from 0 until the middle
+		  for (int y = 0; y < mirrorPoint; y++) {
+			  topPixel = getPixel(x, y);
+			  bottomPixel = getPixel(x, height - 1 - y);
+			  topPixel.setColor(bottomPixel.getColor());
+		  }
+	  }
+	  
+  }
+  
+  /**
+   * Method to mirror around a horizontal line in the middle
+   * based on the height. It copies the top mirrored to the bottom
+   */
+  public void mirrorHorizontal() {
+	  int height = getHeight();
+	  int mirrorPoint = height / 2;
+	  Pixel topPixel, bottomPixel;
+	  
+	  // loop through all the columns
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through all the rows from 0 until the middle
+		  for (int y = 0; y < mirrorPoint; y++) {
+			  topPixel = getPixel(x, y);
+			  bottomPixel = getPixel(x, height - 1 - y);
+			  bottomPixel.setColor(topPixel.getColor());
+		  }
+	  }
+	  
+  }
+  
+  /**
+   * Method to mirror around a vertical line in the middle of the picture based on the width
+   */
+  public void mirrorVertical() {
+	  int witdth = getWidth();
+	  int mirrorPoint = witdth / 2;
+	  Pixel leftPixel, rightPixel;
+	  
+	  // loop through all the rows
+	  for (int y = 0; y < getHeight(); y++) {
+		  // loop from 0 to the middle (mirrorPoint)
+		  for (int x = 0; x < mirrorPoint; x++) {
+			  leftPixel = getPixel(x, y);
+			  rightPixel = getPixel(witdth - 1 - x, y);
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to mirror part of the temple picture around a vertical line at a mirror point
+   */
+  public void mirrorTemple() {
+	  int mirrorPoint = 276;
+	  Pixel leftPixel, rightPixel;
+	  
+	  // loop through all the rows that contain the pediment(roof)
+	  for (int y = 27; y < 97; y++) {
+		  // loop from 13 to just before the mirror point
+		  for (int x = 13; x < mirrorPoint; x++) {
+			  leftPixel = getPixel(x, y);
+			  rightPixel = getPixel(mirrorPoint + (mirrorPoint - x), y);
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to lighten the colors in the picture
+   */
+  public void lighten2() {
+	  Color color;
+	  Pixel pixel;
+	  
+	  // loop through the columns (x direction)
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through the rows (y direction)
+		  for (int y = 0; y < getHeight(); y++) {
+			  
+			  // get the pixel at the x and y location
+			  pixel = getPixel(x, y);
+			  
+			  // get the current color
+			  color = pixel.getColor();
+			  
+			  // get a lighter color
+			  color = color.brighter();
+			  
+			  // set the pixel color to the lighter color
+			  pixel.setColor(color);
+		  }
+	  }
+  }
+  
+  /**
    * Mehod to clear blue from the picture
    * (set the blue to 0 for all pixels)
    */

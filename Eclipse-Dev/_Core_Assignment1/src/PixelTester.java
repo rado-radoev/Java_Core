@@ -3,11 +3,18 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		String fileName = "/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/temple.jpg";
+		Picture picture = new Picture(fileName);
+		picture.mirrorTemple();
+		picture.show();
+		
+	}
+	
+	public static void testMethod7() {
 		String fileName = "/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/beach-smaller.jpg";
 		Picture picture = new Picture(fileName);
 		picture.modifyRGB(1.0, 0.7, 1.5);;
 		picture.show();
-		
 	}
 	
 	public static void testMethod6() {
