@@ -4,11 +4,18 @@ public class TurtleTest {
 	public static void main(String[] args) {
 		World world = new World();
 
-		SpiralTurtle spiralTurtle = new SpiralTurtle(world);
+//		SpiralTurtle spiralTurtle = new SpiralTurtle(world);
 		
-		spiralTurtle.draw();
+//		spiralTurtle.draw();
 		
-//		Turtle turtle = new Turtle(world);
+//		ConfusedTurtle confusedTurtle = new ConfusedTurtle(world);
+//		confusedTurtle.draw();
+		
+//		SmartTurtle smartTurtle = new SmartTurtle(world);
+//		smartTurtle.draw();
+		
+		
+		Turtle turtle = new Turtle(world);
 //		turtle.setName("Jane");
 
 //		turtle.drawArrow(1500);
@@ -16,7 +23,7 @@ public class TurtleTest {
 //		turtle.drawTriangle(130);
 		
 //		turtle.drawStart();
-//		turtle.drawFunnyShapes();
+		turtle.drawFunnyShapes();
 //		
 //		turtle.drawRectangle(200, 100);;
 //		turtle.center();

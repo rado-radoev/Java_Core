@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.*;
+import java.security.SecureRandom;
 
 /**
  * Class that represents a turtle which is similar to a Logo turtle.
@@ -59,19 +60,74 @@ public class Turtle extends SimpleTurtle
   
   /////////////////// methods ///////////////////////
 
-//  public static void main(String[] args)
-//  {
-//    World earth = new World();
-//    Turtle t1 = new Turtle(earth);
-//    t1.forward();
-//  }
-  
-  public void draw() {
-	  
+  public static void main(String[] args)
+  {
+    World earth = new World();
+    Turtle t1 = new Turtle(earth);
+    t1.forward();
   }
   
-  public void drawColor(Color color) {
+  /**
+   * Method to draw random shapes
+   * @param random SecureRandom object that will be used to generate 
+   * random length and random direction
+   */
+  public void drawRandomShape(SecureRandom random) {
+		int randLength;
+		int randDirection;
 	  
+	  for (int i = 0; i < 20; i++) {
+	       
+		  	// generate random length and direction	
+	        randLength = random.nextInt(20) + 130;
+	        randDirection = random.nextInt(120 + 1 - 35) + 35;
+	   
+	        // move the turtle using the specified directions
+	        forward(randLength);
+	        turn(randDirection);
+	    }
+  }
+  
+  /**
+   * Method that draws a spiral
+   */
+  public void drawSpiral() {
+	  
+	  // starting length
+	  int length = 1;
+	  
+	  // loop 50 times
+	  for (int i = 0; i < 50; i++) {
+	
+		// move and turn   
+        forward(length);
+        turn(22);
+        
+        // increment length by 1
+        length++;
+	  }
+  }
+  
+  /**
+   * Method that will be overriden in child classes
+   */
+  public void draw() { }
+  
+  /**
+   * Method that changes the pen color and draws a shape
+   * @param color Color of the pen
+   */
+  public void drawColor(Color color) {
+	  // Get the current color, so it can be reset 
+	  // after done drawing current shape with new colro
+	  Color currentColor = getPenColor();
+	  
+	  // Change the pen color
+	  setPenColor(color);
+	  draw();
+	  
+	  // Change the pen color back to the previous
+	  setPenColor(currentColor);
   }
  
   
