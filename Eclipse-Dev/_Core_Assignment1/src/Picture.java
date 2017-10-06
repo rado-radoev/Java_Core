@@ -94,6 +94,215 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method that will copy all of the passed source picture into
+   * the current picture object starting with the left corner
+   * given by xStart, yStart
+   * @param sourcePath the picture object to copy
+   * @param xStart the x position to start the copy into on the target
+   * @param yStart the y position to start the copy into on the target
+   */
+  public void copyPictureTo(Picture sourcePicture, int xStart, int yStart) {
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through the columns
+	  for (int sourceX = 0, targetX = xStart; sourceX < sourcePicture.getWidth(); sourceX++, targetX++) {
+		  // loop through the rows
+		  for (int sourceY = 0, targetY = yStart; sourceY < sourcePicture.getHeight(); sourceY++, targetY++) {
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method that will copy all of the passed source picture into
+   * the current picture object starting with the left corner
+   * given by xStart. It will put the sourcePicture at 5 pixels from the bottom of this picgure
+   * @param sourcePicture the picture object to copy
+   * @param xStart the x position to start the copy in the target
+   */
+  public void copyPictureTo(Picture sourcePicture, int xStart) {
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through the columns
+	  for (int sourceX = 0, targetX = xStart; sourceX < sourcePicture.getWidth(); sourceX++, targetX++) {
+		  
+		  // loop through rows
+		  for (int sourceY = 0, targetY = getHeight() - sourcePicture.getHeight() - 5;
+				  sourceY < sourcePicture.getHeight(); sourceY++, targetY++) {
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy two flowers in a pattern to the bottom
+   * (5 pixels from bottom) of the current picture
+   */
+  public void copyFlowersBetter() {
+	  // crate the flower picture
+	  Picture flower1Picture =
+			  new Picture(FileChooser.getMediaPath("flower1.jpg"));
+	  Picture flower2Picture =
+			  new Picture(FileChooser.getMediaPath("flower2.jpg"));
+	  
+	  // copy the first flower picture to near the
+	  // bottom left corner of the canvas
+	  copyPictureTo(flower1Picture, 0);
+	  
+	  // copy the flower2 picture starting with
+	  // x = 100 in the canvas
+	  copyPictureTo(flower2Picture, 100);
+	  
+	  // copy the flower1 negated to x = 200
+	  flower1Picture.negate();
+	  copyPictureTo(flower1Picture, 200);
+	  
+	  // clear the blue in flower 2 picture and
+	  // add at x = 300 in the canvas
+	  flower2Picture.clearBlue();
+	  copyPictureTo(flower2Picture, 300);
+	  
+	  // copy the negated flower 1 to x = 400
+	  copyPictureTo(flower1Picture, 400);
+  }
+  
+  /**
+   * Method to copy flower pictures to create a collage.
+   * All the flower pictures will be lined up near the bottom
+   * of the current picture ( 5 pixels from the bottom)
+   */
+  public void copyFlower() {
+	  // create the flower pictures
+	  Picture flower1Picture = 
+			  new Picture(FileChooser.getMediaPath("flower1.jpg"));
+	  Picture flower2Picture =
+			  new Picture(FileChooser.getMediaPath("flower2.jpg"));
+	  
+	  // declare the source and target pixel variables
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // save the heights of the two pictures
+	  int flower1Height = flower1Picture.getHeight();
+	  int flower2Height = flower2Picture.getHeight();
+	  
+	  /* copy the first flower picture to 5 pixels from the bottom
+	   * left corner of the current picture
+	   */
+	  for (int sourceX = 0, targetX = 0; sourceX < flower1Picture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = getHeight() - flower1Height - 5;
+				  sourceY < flower1Picture.getHeight(); sourceY++, targetY++) {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  // copy the flower2 picture starting with x = 100
+	  for (int sourceX = 0, targetX = 100; sourceX < flower2Picture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = getHeight() - flower2Height - 5;
+				  sourceY < flower2Picture.getHeight(); sourceY++, targetY++) {
+			  sourcePixel = flower2Picture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  // copy the flower1 negated to x = 200
+	  flower1Picture.negate();
+	  for (int sourceX = 0, targetX = 200; sourceX < flower1Picture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = getHeight() - flower1Height - 5; sourceY < flower1Height; sourceY++, targetY++) {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  // clear the blue in flower 2 picture and add at x = 300
+	  flower2Picture.clearBlue();
+	  for (int sourceX = 0, targetX = 300; sourceX < flower2Picture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = getHeight() - flower2Height - 5; sourceY < flower2Height; sourceY++, targetY++) {
+			  sourcePixel = flower2Picture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  // copy the negated flower 1 to x = 400
+	  for (int sourceX = 0, targetX = 400; sourceX < flower1Picture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = getHeight() - flower1Height - 5; sourceY < flower1Height; sourceY++, targetY++) {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy Katie's face to the current picture
+   */
+  public void copyKatiesFace() {
+	  String sourceFile = FileChooser.getMediaPath("KatieFancy.jpg");
+	  Picture sourcePicture = new Picture(sourceFile);
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop thought the columns
+	  for (int sourceX = 70, targetX = 100; sourceX < 135; sourceX++, targetX++) {
+		  // loop through rows
+		  for (int sourceY = 3, targetY = 100; sourceY < 80; sourceY++, targetY++) {
+			  // set the target pixel color the source pixel color
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy the picutre of Katie to (100, 100) in the current picutre
+   */
+  public void copyKatieMidway() {
+	  String sourceFile = FileChooser.getMediaPath("KatieFancy.jpg");
+	  Picture sourcePicture = new Picture(sourceFile);
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop thought the columns
+	  for (int sourceX = 0, targetX = 100; sourceX < sourcePicture.getWidth(); sourceX++, targetX++) {
+		  // loop through rows
+		  for (int sourceY = 0, targetY = 100; sourceY < sourcePicture.getHeight(); sourceY++, targetY++) {
+			  // set the target pixel color the source pixel color
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy the picture of Katie to the upper
+   * left corner of the current picutre
+   */
+  public void copyKatie() {
+	  String sourceFile = FileChooser.getMediaPath("KatieFancy.jpg");
+	  Picture sourcePicture = new Picture(sourceFile);
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop thought the columns
+	  for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth(); sourceX++, targetX++) {
+		  // loop through rows
+		  for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight(); sourceY++, targetY++) {
+			  // set the target pixel color the source pixel color
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
    * Method to mirror around a horizontal line in the middle
    * based on the height. It copies the bottom mirrored to the top
    */

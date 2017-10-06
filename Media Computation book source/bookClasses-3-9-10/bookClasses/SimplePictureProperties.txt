@@ -1,3 +1,3 @@
 #Properties for the Simple Picture class
-#Tue Mar 17 11:29:55 EDT 2009
-mediaDirectory=C\:\\intro-prog-java\\mediasources/
+#Thu Oct 05 19:54:23 PDT 2017
+mediaDirectory=/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/

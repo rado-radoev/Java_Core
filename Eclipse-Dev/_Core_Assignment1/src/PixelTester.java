@@ -3,11 +3,11 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
-		String fileName = "/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/temple.jpg";
-		Picture picture = new Picture(fileName);
-		picture.mirrorTemple();
-		picture.show();
-		
+		//FileChooser.setMediaPath("/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/");
+		String fileName = FileChooser.getMediaPath("7inx95in.jpg");
+		Picture paperPicture = new Picture(fileName);
+		paperPicture.copyFlowersBetter();
+		paperPicture.show();
 	}
 	
 	public static void testMethod7() {
