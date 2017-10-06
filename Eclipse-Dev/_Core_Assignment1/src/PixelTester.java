@@ -4,9 +4,9 @@ public class PixelTester {
 
 	public static void main(String[] args) {
 		//FileChooser.setMediaPath("/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/");
-		String fileName = FileChooser.getMediaPath("7inx95in.jpg");
+		String fileName = FileChooser.getMediaPath("640x480.jpg");
 		Picture paperPicture = new Picture(fileName);
-		paperPicture.copyFlowersBetter();
+		paperPicture.blendPictures();
 		paperPicture.show();
 	}
 	

@@ -94,6 +94,61 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to blend two picture together 
+   */
+  public void blendPictures() {
+	  // create the sister pictures
+	  Picture katiePicture = 
+			  new Picture(FileChooser.getMediaPath("KatieFancy.jpg"));
+	  Picture jennyPicture = 
+			  new Picture(FileChooser.getMediaPath("JenParty.jpg"));
+	  
+	  // declare the source and target pixel variables
+	  Pixel katiePixel, jennyPixel, targetPixel;
+	  
+	  /* declare the target x and source x since we will need
+	   * the values after the for loop
+	   */
+	  int sourceX = 0, targetX = 0;
+  
+	  // copy the first 150 pixels of katie to the canvas
+	  for (; sourceX < 150; sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = 0; sourceY < katiePicture.getHeight(); sourceY++, targetY++) {
+			  katiePixel = katiePicture.getPixel(sourceX, sourceY);
+			  jennyPixel = getPixel(targetX, targetY);
+			  jennyPixel.setColor(katiePixel.getColor());
+		  }
+	  }
+	  
+	  /* copy 50% of katie and 50% of jenny till the end of katie's width */
+	  for (; sourceX < katiePicture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = 0; sourceY < katiePicture.getHeight(); sourceY++, targetY++) {
+			  katiePixel = katiePicture.getPixel(sourceX, sourceY);
+			  jennyPixel = jennyPicture.getPixel(sourceX - 150, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(new Color( (int) (katiePixel.getRed() * .5 +
+					  								jennyPixel.getRed() * .5) ,
+					  						  (int) (katiePixel.getGreen() * .5 +
+					  						  		jennyPixel.getGreen() * .5),
+					  						  (int) (katiePixel.getBlue() * .5 +
+					  								 jennyPixel.getBlue() * .5)));
+		  }
+	  }
+	  
+	  // copy the rest of jenny
+	  sourceX = sourceX - 150;
+	  for (; sourceX < jennyPicture.getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = 0; sourceY < jennyPicture.getHeight(); sourceY++, targetY++) {
+			  jennyPixel = jennyPicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(jennyPixel.getColor());
+		  }
+	  }
+	  
+  }
+   
+  
+  /**
    * Method that will copy all of the passed source picture into
    * the current picture object starting with the left corner
    * given by xStart, yStart
