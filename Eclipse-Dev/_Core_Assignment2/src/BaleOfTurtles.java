@@ -8,9 +8,9 @@ public class BaleOfTurtles {
 		
 		/* Generate array of different turtle objects*/
 		Turtle[] turtles = {
-				new SpiralTurtle(world),
+				new SpiralTurtle(150, 150, world),
 				new ConfusedTurtle(world),
-				new SmartTurtle(world)
+				new SmartTurtle(390, 400, world)
 		};
 		
 		/* Colors array; to be used to set different color for each turtle*/

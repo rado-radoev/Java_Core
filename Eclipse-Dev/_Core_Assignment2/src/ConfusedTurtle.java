@@ -47,6 +47,7 @@ public class ConfusedTurtle extends Turtle {
 	@Override
 	// Overridden turtle method that draws random shape
 	public void draw() {
+		rand = new SecureRandom();
 		drawRandomShape(rand);	
 	}
 }

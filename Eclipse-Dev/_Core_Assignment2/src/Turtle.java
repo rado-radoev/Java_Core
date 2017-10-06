@@ -77,14 +77,16 @@ public class Turtle extends SimpleTurtle
 		int randDirection;
 	  
 	  for (int i = 0; i < 20; i++) {
-	       
-		  	// generate random length and direction	
-	        randLength = random.nextInt(20) + 130;
-	        randDirection = random.nextInt(120 + 1 - 35) + 35;
-	   
-	        // move the turtle using the specified directions
-	        forward(randLength);
-	        turn(randDirection);
+		  
+	       if (outOfBoundCheck()) {
+			  	// generate random length and direction	
+		        randLength = random.nextInt(20) + 70;
+		        randDirection = random.nextInt(120 + 1 - 35) + 35;
+		   
+		        // move the turtle using the specified directions
+		        forward(randLength);
+		        turn(randDirection);
+	       }
 	    }
   }
   
@@ -99,12 +101,15 @@ public class Turtle extends SimpleTurtle
 	  // loop 50 times
 	  for (int i = 0; i < 50; i++) {
 	
-		// move and turn   
-        forward(length);
-        turn(22);
-        
-        // increment length by 1
-        length++;
+		  if (outOfBoundCheck()) {
+		  
+			// move and turn   
+	        forward(length);
+	        turn(22);
+	        
+	        // increment length by 1
+	        length++;
+		  }
 	  }
   }
   
@@ -117,17 +122,10 @@ public class Turtle extends SimpleTurtle
    * Method that changes the pen color and draws a shape
    * @param color Color of the pen
    */
-  public void drawColor(Color color) {
-	  // Get the current color, so it can be reset 
-	  // after done drawing current shape with new colro
-	  Color currentColor = getPenColor();
-	  
+  public void drawColor(Color color) { 
 	  // Change the pen color
 	  setPenColor(color);
 	  draw();
-	  
-	  // Change the pen color back to the previous
-	  setPenColor(currentColor);
   }
  
   
@@ -181,7 +179,7 @@ public class Turtle extends SimpleTurtle
 	  // if in odd iteration, drawing width
 	  
 	  for (int i = 1; i <= 4; i++) {
-		  if (!outOfBoundCheck())
+		  if (outOfBoundCheck())
 		  {
 			  this.turnRight(); 
 			  if (i % 2 == 0) {
@@ -231,7 +229,7 @@ public class Turtle extends SimpleTurtle
    */
   public void drawFunnyShapes() throws IllegalArgumentException {
 	  for (int i = 0; i < 10; i++) {
-		  if (!outOfBoundCheck()) {
+		  if (outOfBoundCheck()) {
 			  this.forward(50);
 			  this.turn(-123);
 		  }
@@ -243,7 +241,7 @@ public class Turtle extends SimpleTurtle
 	  Color currentColor = this.getBodyColor();
 	  this.setBodyColor(Color.ORANGE);
 	  for (int i = 0; i < 30; i++) {
-		  if (!outOfBoundCheck()) {
+		  if (outOfBoundCheck()) {
 			  this.forward(45);
 			  this.turn(20);
 		  }
@@ -259,14 +257,15 @@ public class Turtle extends SimpleTurtle
    * @return boolean if the turtle is currently out the frames's limit
    */
   private boolean outOfBoundCheck() {
-	  ModelDisplay displayMode = this.getModelDisplay();
+	  ModelDisplay displayMode = getModelDisplay();
 	  int maxHeight = displayMode.getHeight();
 	  int maxWidth = displayMode.getWidth();
 	  
-	  if (this.getXPos() > maxHeight || this.getYPos() > maxWidth)
-		  return true;
-	  else
+	  if ((getXPos() > maxHeight || getXPos() < 0) || 
+			  (getYPos() > maxWidth || getYPos() < 0))
 		  return false;
+	  else
+		  return true;
   }
   
   /**
@@ -297,7 +296,7 @@ public class Turtle extends SimpleTurtle
 		  int xx = (int)(circleX + radius * Math.cos(2.0 * Math.PI * i/sides));
 		  int xy = (int)(circleY + radius * Math.sin(2.0 * Math.PI * i/sides));
 		  
-		  if (!outOfBoundCheck()) {
+		  if (outOfBoundCheck()) {
 			  this.moveTo(xx, xy); 
 		  }
 		  else {
