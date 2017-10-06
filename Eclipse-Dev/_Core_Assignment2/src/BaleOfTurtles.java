@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class BaleOfTurtles {
 
-	public static void main(String[] args) {
+	 public static void main(String[] args) {
 		/* Generate new world*/
 		World world = new World();
 		
