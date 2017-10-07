@@ -3,6 +3,12 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		Picture pic =
+				new Picture(FileChooser.getMediaPath("victorAndI.jpg"));
+		pic.explore();
+	}
+	
+	public static void testMethod8() {
 		Picture picture = new Picture(FileChooser.getMediaPath("flower1.jpg"));
 		picture.scaleUp(20).explore();
 	}

@@ -93,6 +93,27 @@ public class Picture extends SimplePicture
      pictObj.explore();
   }
   
+  
+  /**
+   * Method that will mirror Victor's head
+   */
+  public void mirrorVictorsHead() {
+	  Pixel leftPixel, rightPixel;
+	  int mirrorPoint = 3088;
+	  
+	  // loop through rolls
+	  for (int y = 1408; y < 2984; y++) {
+		  
+		  // loop through columns
+		  for (int x = 1740; x < mirrorPoint; x++) {
+			  leftPixel = getPixel(x, y);
+			  rightPixel = getPixel(mirrorPoint + (mirrorPoint - x),  y);
+			  rightPixel.setColor(leftPixel.getColor());
+			  
+		  }
+	  }
+  }
+  
   /**
    * Method to create a new picture that is scaled up by the passed number of times
    * @return the new scaled up picture
