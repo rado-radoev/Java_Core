@@ -94,6 +94,102 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to create a new picture that is scaled up by the passed number of times
+   * @return the new scaled up picture
+   */
+  public Picture scaleUp(int numTimes) {
+	  Picture targetPicture = 
+			  new Picture(getWidth() * numTimes,
+		  	 			  getHeight() * numTimes);
+	  
+	  Pixel sourcePixel, targetPixel;
+	  int targetX = 0, targetY = 0;
+	  
+	  // loop through the source picture columns
+	  for (int sourceX = 0; sourceX < getWidth(); sourceX++) {
+		  
+		  // loop through the source picture rows
+		  for (int sourceY = 0; sourceY < getHeight(); sourceY++) {
+			  // get the source pixel
+			  sourcePixel = getPixel(sourceX, sourceY);
+			  
+			  // loop copying to the target y
+			  for (int indexY = 0; indexY < numTimes; indexY++) {
+				  // loop copying to the target x
+				  for (int indexX = 0; indexX < numTimes; indexX++) {
+					  targetX = sourceX * numTimes + indexX;
+					  targetY = sourceY * numTimes + indexY;
+					  targetPixel = targetPicture.getPixel(targetX, targetY);
+					  targetPixel.setColor(sourcePixel.getColor());
+				  }
+			  }
+		  }
+	  }
+	  return targetPicture;
+  }
+  
+  /**
+   * Method to copy a flower but scaled to 2x normal size onto the current picture
+   */
+  public void copyFlowerLarger() {
+	  Picture flowerPicture =
+			  new Picture(FileChooser.getMediaPath("rose.jpg"));
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through columns
+	  for (double sourceX = 0, targetX = 0; sourceX < flowerPicture.getWidth(); sourceX += 0.5, targetX++) {
+		  
+		  // loop through rows
+		  for (double sourceY = 0, targetY = 0; sourceY < flowerPicture.getHeight(); sourceY += 0.5, targetY++) {
+			  sourcePixel = flowerPicture.getPixel((int) sourceX, (int)sourceY);
+			  targetPixel = getPixel((int) targetX, (int) targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy the picture of Jakita but smaller (half as big)
+   * to the current picture
+   */
+  public void copyJakitaSmaller() {
+	  Picture jakitaPicture =
+			  new Picture(FileChooser.getMediaPath("jakita.jpg"));
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through columns
+	  for (int sourceX = 0, targetX = 0; sourceX < jakitaPicture.getWidth(); sourceX+=2, targetX++) {
+		  // loop through rows
+		  for (int sourceY = 0, targetY = 0; sourceY < jakitaPicture.getHeight(); sourceY+=2, targetY++) {
+			  sourcePixel = jakitaPicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy the picture of Katie but rotate
+   * her left 90 degrees on the current picutre
+   */
+  public void copyKatieLeftRotation() {
+	  String fileName = FileChooser.getMediaPath("KatieFancy.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through columns
+	  for (int sourceX = 0; sourceX < sourcePicture.getWidth(); sourceX++) {
+		  // loop through rows
+		  for (int sourceY = 0; sourceY < sourcePicture.getHeight(); sourceY++) {
+			  // set the target pixel color to the source pixel color
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = getPixel(sourceY, sourcePicture.getWidth() - 1 - sourceX);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /**
    * Method to blend two picture together 
    */
   public void blendPictures() {

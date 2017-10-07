@@ -3,11 +3,8 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
-		//FileChooser.setMediaPath("/Users/superlamer/GitHub/Java_Core/Media Computation book source/mediasources-no-movies-7-30-06/intro-prog-java/mediasources/");
-		String fileName = FileChooser.getMediaPath("640x480.jpg");
-		Picture paperPicture = new Picture(fileName);
-		paperPicture.blendPictures();
-		paperPicture.show();
+		Picture picture = new Picture(FileChooser.getMediaPath("flower1.jpg"));
+		picture.scaleUp(20).explore();
 	}
 	
 	public static void testMethod7() {
