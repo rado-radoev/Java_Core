@@ -93,11 +93,18 @@ public class Picture extends SimplePicture
      pictObj.explore();
   }
   
+  /**
+   * Method that will mirror Victor's head vertically (ex 5.3)
+   */
+  public void mirrorVictorsHeadVertically() {
+	  int height = getHeight();
+	  int mirrorPoint;
+  }
   
   /**
-   * Method that will mirror Victor's head
+   * Method that will mirror Victor's head horizontally (ex 5.4)
    */
-  public void mirrorVictorsHead() {
+  public void mirrorVictorsHeadHorizontally() {
 	  Pixel leftPixel, rightPixel;
 	  int mirrorPoint = 3088;
 	  
