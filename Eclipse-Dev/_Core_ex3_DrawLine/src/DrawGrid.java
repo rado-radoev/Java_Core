@@ -1,18 +1,26 @@
 import java.awt.Graphics;
 import javax.swing.JPanel;
-import java.awt.Color;
 
 public class DrawGrid extends JPanel {
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		for (int col = 0; col < 8; col++) {
-			for (int row = col; row < col + 1; row++) {
-				//g.drawLine(0, 10, 0, 10);
+		int startX = 10, endX = 10, startY = 10, endY = 10;
+		
+		for (int col = 0; col <= 8; col++) {
+		
+			g.drawLine(startX, 10, endX, 170);
+			
+			for (int row = col - 1; row < col; row++) {
+				g.drawLine(10, startY, 170, endY);
 			}
-			g.drawLine(50, 150, 5, 150);
+			
+			startX+= 20;
+			endX+= 20;
+			startY+= 20;
+			endY+= 20;
 		}
 	}
 }
