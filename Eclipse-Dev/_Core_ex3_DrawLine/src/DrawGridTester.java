@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 public class DrawGridTester {
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Draw 8 by 8 grid");
+		JFrame frame = new JFrame("Drawing 8 by 8 grid");
 		DrawGrid grid = new DrawGrid();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(grid);
