@@ -3,9 +3,13 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		Picture barbara =
+				new Picture("barbara.jpg");
 		Picture pic =
-				new Picture(FileChooser.getMediaPath("victorAndI.jpg"));
-		pic.explore();
+				new Picture();
+				
+		pic.copyPictureRotateLeft(barbara).explore();;
+		
 	}
 	
 	public static void testMethod8() {

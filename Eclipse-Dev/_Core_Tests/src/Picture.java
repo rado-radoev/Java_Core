@@ -94,6 +94,54 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to flip a picture to the right
+   */
+  public Picture flipToRight() {
+	  int height = getHeight();
+	  int width = getWidth();
+	  
+	  Pixel sourcePixel, targetPixel;
+	  
+	  Picture target = new Picture(width, height);
+	  
+	  // loop through all the columns
+	  for (int sourceX = 0; sourceX < width; sourceX++) {
+		  // loop through all the rows
+		  for (int sourceY = 0; sourceY < height; sourceY++) {
+			  sourcePixel = getPixel(sourceX, sourceY);
+			  targetPixel = target.getPixel(width - 1-  sourceX, sourceY) ;
+			  targetPixel.setColor(sourcePixel.getColor());
+		   }
+	  }
+	  
+	  return target;
+  }
+  
+  /**
+   * Method to flip a picture upside down
+   */
+  public Picture flipUpSideDown() {
+	  int height = getHeight();
+	  int width = getWidth();
+	  
+	  Pixel sourcePixel, targetPixel;
+	  
+	  Picture target = new Picture(width, height);
+	  
+	  // loop through all the columns
+	  for (int sourceX = 0; sourceX < width; sourceX++) {
+		  // loop through all the rows
+		  for (int sourceY = 0; sourceY < height; sourceY++) {
+			  sourcePixel = getPixel(sourceX, sourceY);
+			  targetPixel = target.getPixel(width - 1 - sourceX, height - 1 - sourceY) ;
+			  targetPixel.setColor(sourcePixel.getColor());
+		   }
+	  }
+	  
+	  return target;
+  }
+  
+  /**
    * Method that will mirror Victor's head vertically (ex 5.3)
    */
   public void mirrorVictorsHeadVertically() {
@@ -147,6 +195,10 @@ public class Picture extends SimplePicture
 				  for (int indexX = 0; indexX < numTimes; indexX++) {
 					  targetX = sourceX * numTimes + indexX;
 					  targetY = sourceY * numTimes + indexY;
+					  System.out.println("sourceX: " + sourceX);
+					  System.out.println("sourceY: " + sourceY);
+					  System.out.println("targetX: " + targetX);
+					  System.out.println("targetY: " + targetY);
 					  targetPixel = targetPicture.getPixel(targetX, targetY);
 					  targetPixel.setColor(sourcePixel.getColor());
 				  }
@@ -194,6 +246,27 @@ public class Picture extends SimplePicture
 			  targetPixel.setColor(sourcePixel.getColor());
 		  }
 	  }
+  }
+  
+  /**
+   * Method to copy the picture but rotate
+   * left 90 degrees and return rotated picture
+   */
+  public Picture copyPictureRotateLeft(Picture picture) {
+	  Picture newPicture = new Picture(picture.getHeight(), picture.getWidth());
+	  Pixel sourcePixel, targetPixel;
+	  
+	  // loop through columns
+	  for (int sourceX = 0; sourceX < picture.getWidth(); sourceX++) {
+		  // loop through rows
+		  for (int sourceY = 0; sourceY < picture.getHeight(); sourceY++) {
+			  // set the target pixel color to the source pixel color
+			  sourcePixel = picture.getPixel(sourceX, sourceY);
+			  targetPixel = newPicture.getPixel(sourceY, picture.getWidth() - 1 - sourceX);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  return newPicture;
   }
   
   /**
