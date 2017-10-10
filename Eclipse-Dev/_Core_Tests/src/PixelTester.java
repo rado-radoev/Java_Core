@@ -3,13 +3,47 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		Picture pic = 
+				new Picture("flower1.jpg");
+		pic.highlightLightAndDark(50d, Color.RED);
+		pic.explore();
+	}
+	
+	public static void testMethod13() {
+		Picture pic = 
+				new Picture("butterfly1.jpg");
+		pic.highlightLightAndDark(50d, Color.RED);
+		pic.explore();
+	}
+	
+	public static void testMethod12() {
+		Picture pic = 
+				new Picture("gorge.jpg");
+		pic.posterize(1);
+		pic.explore();
+	}
+	
+	public static void testMethod11() {
+		Picture pic = 
+				new Picture("jenny-red.jpg");
+		pic.removeRedEye(109, 91, 202, 107, Color.BLACK);
+		pic.explore();
+	}
+	
+	public static void testMethod10() {
+		Picture pic = 
+				new Picture("butterfly1.jpg");
+		pic.edgeDetection(10);
+		pic.explore();
+	}
+	
+	public static void testMethod9() {
 		Picture barbara =
 				new Picture("barbara.jpg");
 		Picture pic =
 				new Picture();
 				
 		pic.copyPictureRotateLeft(barbara).explore();;
-		
 	}
 	
 	public static void testMethod8() {

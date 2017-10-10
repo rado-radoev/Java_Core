@@ -6,6 +6,8 @@ import java.text.*;
 import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 /**
  * A class that represents a picture.  This class inherits from 
  * SimplePicture and allows the student to add functionality to
@@ -91,6 +93,288 @@ public class Picture extends SimplePicture
      String fileName = FileChooser.pickAFile();
      Picture pictObj = new Picture(fileName);
      pictObj.explore();
+  }
+  
+  /**
+   * Method to blur the pixels
+   * @param numPixels the number of pixels t average in all diections so if the numPixels is 2
+   * then we will average all pixels in the rectangle defined by 2 before the
+   * current pixel to 2 after the current pixel
+   */
+  public void blur(int numPixels) {
+	  Pixel pixel, samplePixel;
+	  int redValue = 0, greenValue = 0, blueValue = 0;
+	  int count = 0;
+	  
+	  // loop through the pixels
+	  for (int x = 0; x < getWidth(); x++) {
+		for (int y = 0; y < getHeight(); y++) {
+			// get the current pixel
+			pixel = this.getPixel(x, y);
+			
+			// reset the count and red, green, blue values
+			count = 0;
+			redValue = greenValue = blueValue = 0;
+			
+			// loop through pixel numPixel before x to numPixels after x
+			for (int xSample = x - numPixels; xSample <= x + numPixels; xSample++) {
+				for (int ySample = y - numPixels; ySample <= y + numPixels; ySample++) {
+					// check that we are in the range of acceptable pixels
+					if (xSample >= 0 && xSample < getWidth() &&
+							ySample >= 0 && ySample < getHeight()) {
+						samplePixel = getPixel(xSample, ySample);
+						redValue = redValue + samplePixel.getRed();
+						greenValue = greenValue + samplePixel.getGreen();
+						blueValue = blueValue + samplePixel.getBlue();
+						count++;
+					}
+				}
+			}
+			
+			// Use average color of surrounding pixels
+			Color newColor = new Color(redValue / count,
+					greenValue / count, 
+					blueValue / count);
+			pixel.setColor(newColor);
+		}
+	}
+  }
+  
+  /**
+   * Method to replace the pixel colors in the current picture object that 
+   * have a color distance less than the passed
+   * @param amount to white or black with the passed replacement color
+   * @param replacementColor the new color to use
+   */
+  public void highlightLightAndDark(double amount, Color replacementColor) {
+	  Pixel pixel;
+	  
+	  // loop through all the pixels in the x direction
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through all the pixels in hte y direction
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel
+			  pixel = getPixel(x, y);
+			  
+			  // if the distance from white and black is less than the
+			  // passed amount use the replace color instead
+			  if (pixel.colorDistance(Color.WHITE) < amount ||
+					  pixel.colorDistance(Color.BLACK) < amount) {
+				  pixel.setColor(replacementColor);
+			  }
+		  }
+	  }
+  }
+  
+  /**
+   * Method to posterize (reduce the number of colors) in the picture
+   * @param numLevels the number of color levels to use
+   */
+  public void posterize(int numLevels) {
+	  Pixel pixel;
+	  int redValue = 0, greenValue = 0, blueValue = 0;
+	  int increment = (int) (256.0 / numLevels);
+	  int bottomValue, topValue, middleValue = 0;
+	  
+	  // loop through the pixels
+	  for (int x = 0; x < getWidth(); x++) {
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel and colors
+			  pixel = getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // loop through the number of levels
+			  for (int i = 0; i < numLevels; i++) {
+				  // compute the bottom, top, middle values 
+				  bottomValue = i * increment;
+				  topValue = (i + 1) * increment;
+				  middleValue = (int) ((bottomValue + topValue - 1) / 2.0);
+			  
+				  // check if current values are in current range and if so set them to the middle value
+				  if (bottomValue <= redValue &&
+						  redValue < topValue)
+					  pixel.setRed(middleValue);
+				  if (bottomValue <= greenValue &&
+						  greenValue < topValue)
+					  pixel.setGreen(middleValue);
+				  if (bottomValue <= blueValue &&
+						  blueValue < topValue)
+					  pixel.setBlue(middleValue);
+			  
+			  }
+		  }
+	  }
+  }
+  
+  /**
+   * Method to posterize (reduce the number of colors) in the picture
+   * THe number of reds, greens and blues will be 4
+   */
+  public void posterize() {
+	  Pixel pixel;
+	  double redValue = 0, greenValue = 0, blueValue = 0;
+	  
+	  // loop through the pixels
+	  for (int x = 0; x < getWidth(); x++) {
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel and colors
+			  pixel = getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // check for red range and change color
+			  if (redValue < 64)
+				  redValue = 31;
+			  else if (redValue < 128)
+				  redValue = 95;
+			  else if (redValue < 192)
+				  redValue = 159;
+			  else 
+				  redValue = 223;
+			  
+			  // check for green range
+			  if (greenValue < 64)
+				  greenValue = 31;
+			  else if (greenValue < 128)
+				  greenValue = 95;
+			  else if (greenValue < 192)
+				  greenValue = 159;
+			  else 
+				  greenValue = 223;
+			  
+			  // check for blue range
+			  if (blueValue < 64)
+				  blueValue = 31;
+			  else if (blueValue < 128)
+				  blueValue = 95;
+			  else if (blueValue < 192)
+				  blueValue = 159;
+			  else 
+				  blueValue = 223;
+			  
+			  // set the colors
+			  pixel.setRed((int)redValue);
+			  pixel.setGreen((int)greenValue);
+			  pixel.setBlue((int)blueValue);
+		  }
+	  }
+  }
+  
+  /**
+   * Method to change the current picture to a sepia tint (modify the middle colors to a light brown 
+   * and the lights colors to a light yellow and make the shadows darker)
+   */
+  public void sepiaTint() {
+	  Pixel pixel;
+	  double redValue = 0, greenValue = 0, blueValue = 0;
+	  
+	  // first change the current picture to grayscale
+	  grayscale();
+	  
+	  // loop through the pixels (cols)
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through the rows
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel and color values
+			  pixel = getPixel(x, y);
+			  
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // tint the shadows darker
+			  if (redValue < 60) {
+				  redValue *= .9;
+				  greenValue *= .9;
+				  blueValue *= .9;
+			  }
+			  
+			  // tint the midtones a light brown by reducing the blue
+			  if (redValue < 190) {
+				  blueValue *= .8;
+			  }
+			  // tint the highlights a light yellow by reducing the blue
+			  else {
+				  blueValue *= .9;
+			  }
+			  
+			  // set the colors
+			  pixel.setRed((int) redValue);
+			  pixel.setGreen((int)greenValue);
+			  pixel.setBlue((int) blueValue);
+		  }
+	  }
+  }
+  
+  /**
+   * Method to remove red-eye from the current picture object
+   * in the rectangle defined by startX, startY, endX, endY. 
+   * The red will be replaced with the passed newColor
+   * @param startX the top left corner x value of a rectangle
+   * @param startY the top left corner y value of a rectangle
+   * @param endX the bottom right corner x value of a rectangle
+   * @param endY the bottom right corner y value of a rectangle
+   * @param newColor the new color to use
+   */
+  public void removeRedEye(int startX, int startY, int endX, int endY, Color newColor) {
+	  Pixel pixel;
+	  // loop through the pixels in the rectangle defined by the startX, startY and endX, endY
+	  for(int x = startX; x < endX; x++) {
+		  for (int y = startY; y < endY; y++) {
+			  // get the current pixel
+			  pixel = getPixel(x, y);
+			  
+			  // if the color is near red then change it
+			  if (pixel.colorDistance(Color.RED) < 167)
+				  pixel.setColor(newColor);
+		  }
+	  }
+  }
+  
+  
+  /**
+   * Method to do simple edge detection by comparing the absolute
+   * value of the difference between the color intensities 
+   * (average of the color values) between a pixel and the pixel below it. If the 
+   * absolute value of the difference between the color intensities is 
+   * less than a passed amount the top 
+   * pixel color will be set to white.
+   * Otherwise it is set to black.
+   * @param amount if the absolute value of the differences in the 
+   * color average is less that this
+   * set the color to white, else black
+   */
+  
+  public void edgeDetection(double amount) {
+	  Pixel topPixel, bottomPixel;
+	  double topAverage = 0D, bottomAverage = 0D;
+	  int endY = getHeight() - 1;
+	  
+	  // loop through y (row) values from 0 to height - 1
+	  for (int y = 0; y < endY; y++) {
+		  // loop through x(col) values from 0 to width
+		  for (int x = 0; x < getWidth(); x++) {
+			  // get the top and bottom pixels
+			  topPixel = getPixel(x, y);
+			  bottomPixel = getPixel(x, y+1);
+			  
+			  // get the color averages for the two pixels
+			  topAverage = topPixel.getAverage();
+			  bottomAverage = bottomPixel.getAverage();
+			  
+			  // check if the absolute value of the difference is less than the amount
+			  if (Math.abs(topAverage - bottomAverage) < amount)
+				  // value is lower then the amount
+				  topPixel.setColor(Color.WHITE);
+			  else
+				  // else set the color to black
+				  topPixel.setColor(Color.BLACK);
+		  }
+	  }
+	  
   }
   
   /**
