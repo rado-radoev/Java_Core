@@ -100,6 +100,32 @@ public class Picture extends SimplePicture
    * @param newBg the new background image to use to replace
    * the blue from the current picture
    */
+  public void chromakeyShorter(Picture newBg) {
+	  Pixel[] pixelArray = getPixels();
+	  Pixel currentPixel, newPixel;
+	  
+	  // loop thorugh the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  // get current pixel
+		  currentPixel = pixelArray[i];
+		  
+		  /* if the color at the current pixel is mostly blue
+		   * (blue value is greater than green and red combined)
+		   * then use the new background
+		   */
+		  if (currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue()) {
+			  newPixel = newBg.getPixel(currentPixel.getX(), currentPixel.getY());
+			  currentPixel.setColor(newPixel.getColor());
+		  }
+	  }
+  }
+  
+  
+  /**
+   * Method to do chromakey using a blue background
+   * @param newBg the new background image to use to replace
+   * the blue from the current picture
+   */
   public void chromakey(Picture newBg) {
 	  Pixel currentPixel, newPixel;
 	  

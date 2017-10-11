@@ -9,7 +9,7 @@ public class PixelTester {
 				new Picture("moon-surface.jpg");
 		Picture newBg1 = 
 				new Picture("beach.jpg");
-		pic.chromakey(newBg1);
+		pic.chromakeyShorter(newBg1);
 		
 		pic.explore();
 	}
