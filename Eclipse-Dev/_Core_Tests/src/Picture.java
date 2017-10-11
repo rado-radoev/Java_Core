@@ -96,6 +96,66 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to do chromakey using a blue background
+   * @param newBg the new background image to use to replace
+   * the blue from the current picture
+   */
+  public void chromakey(Picture newBg) {
+	  Pixel currentPixel, newPixel;
+	  
+	  // loop through the columns
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through the rows
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel
+			  currentPixel = getPixel(x, y);
+			  
+			  /* if the color at the current pixel is mostly blue
+			   * (blue value is greater than red and green combined)
+			   * then use new background color
+			   */
+			  if (currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue()) {
+				  newPixel = newBg.getPixel(x, y);
+				  currentPixel.setColor(newPixel.getColor());
+			  }
+			   
+		  }
+	  }
+  }
+  
+  /**
+   * Method to replace the background in the current picture
+   * with the background from another picture
+   * @param oldBackground a picture with the old background to replace
+   * @param newBackground a picture with the new background to use
+   * @param threshold if the distance between the current pixel color
+   * and the background pixel color is less than this amount
+   * use the new background pixel color
+   */
+  public void swapBackground(Picture oldBackground, Picture newBackground, double treshold) {
+	  Pixel currentPixel, oldPixel, newPixel;
+	  
+	  // loop through the columns
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through the rows
+		  for (int y = 0; y < getHeight(); y++) {
+			  // get the current pixel and the old background
+			  currentPixel = getPixel(x, y);
+			  oldPixel = oldBackground.getPixel(x, y);
+			  
+			  /* if the distance between the current pixel color
+			   * and the old background pixel color is less than 
+			   * the threshold then swap in the new background pixel
+			   */
+			  if (currentPixel.colorDistance(oldPixel.getColor()) < treshold) {
+				  newPixel = newBackground.getPixel(x, y);
+				  currentPixel.setColor(newPixel.getColor());
+			  }
+		  }
+	  }
+  }
+  
+  /**
    * Method to blur the pixels
    * @param numPixels the number of pixels t average in all diections so if the numPixels is 2
    * then we will average all pixels in the rectangle defined by 2 before the

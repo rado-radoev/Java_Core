@@ -4,6 +4,30 @@ public class PixelTester {
 
 	public static void main(String[] args) {
 		Picture pic = 
+				new Picture("blue-mark.jpg");
+		Picture newBg = 
+				new Picture("moon-surface.jpg");
+		Picture newBg1 = 
+				new Picture("beach.jpg");
+		pic.chromakey(newBg1);
+		
+		pic.explore();
+	}
+	
+	public static void testMethod15() {
+		Picture pic = 
+				new Picture("twoKidsWall.jpg");
+		Picture oldBg =
+				new Picture("wall2.jpg");
+		Picture newBg = 
+				new Picture("bridge.jpg");
+		pic.swapBackground(oldBg, newBg, 50);
+		
+		pic.explore();
+	}
+	
+	public static void testMethod14() {
+		Picture pic = 
 				new Picture("flower1.jpg");
 		pic.highlightLightAndDark(50d, Color.RED);
 		pic.explore();
