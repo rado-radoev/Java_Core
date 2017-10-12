@@ -92,7 +92,7 @@ public class Picture extends SimplePicture {
 	}
 
 	public void increaseRed2(double amount) {
-		increaseRed2(amount, Color.RED);
+		increaseColor(amount, Color.RED);
 	}
 
 	private void increaseColor(double amount, Color color) {
