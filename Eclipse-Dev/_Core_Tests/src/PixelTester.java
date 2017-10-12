@@ -4,8 +4,8 @@ public class PixelTester {
 
 	public static void main(String[] args) {
 		Picture pic = 
-				new Picture("victorAndI.jpg");
-		pic.makeFun();
+				new Picture("barbara.jpg");
+		pic.blur(20);
 		pic.explore();
 	}
 	
