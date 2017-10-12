@@ -87,6 +87,38 @@ public class Picture extends SimplePicture {
 		pictObj.explore();
 	}
 
+	public void increaseRed2() {
+		increaseColor(30, Color.RED);
+	}
+
+	public void increaseRed2(double amount) {
+		increaseRed2(amount, Color.RED);
+	}
+
+	private void increaseColor(double amount, Color color) {
+		// get all the pixels
+		Pixel[] pixels = getPixels();
+
+		// the current pixel value
+		int value = 0;
+
+		for (Pixel pixel : pixels) {
+			if (color.equals(Color.RED)) {
+				value = pixel.getRed();
+				value = (int) (value * amount);
+				pixel.setRed(value);
+			} else if (color.equals(Color.GREEN)) {
+				value = pixel.getGreen();
+				value = (int) (value * amount);
+				pixel.setGreen(value);
+			} else if (color.equals(Color.BLUE)) {
+				value = pixel.getBlue();
+				value = (int) (value * amount);
+				pixel.setBlue(value);
+			}
+		}
+	}
+
 	/**
 	 * Method to increase the amount of red by 30%
 	 */
