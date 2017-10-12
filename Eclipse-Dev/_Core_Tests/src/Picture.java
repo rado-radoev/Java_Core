@@ -96,6 +96,75 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to make fun of someone
+   * turns skin green
+   * turns eyes red
+   * turns hair orange
+   */
+  public void makeFun() {
+	  Pixel currentPixel, newPixel;
+	  // Make eyes red
+	  for (int x = 1888; x < 2800; x++) {
+		  for (int y = 2132; y < 2516; y++) {
+			  currentPixel = getPixel(x, y);
+			  if (currentPixel.getRed() < 40 &&
+					  currentPixel.getGreen() < 40 &&
+					  currentPixel.getBlue() < 40) {
+				  newPixel = getPixel(x, y);
+				  newPixel.setColor(Color.RED);
+			  }
+		  }
+	  }
+	  
+	  // make hair green
+	  for (int x = 2180; x < 3108; x++) {
+		  for (int y = 1352; y < 2540; y++) {
+			  currentPixel = getPixel(x, y);
+			  if (currentPixel.getRed() < 60 &&
+					  currentPixel.getGreen() < 60 &&
+					  currentPixel.getBlue() < 60) {
+				  newPixel = getPixel(x, y);
+				  newPixel.setColor(Color.GREEN);
+			  }
+		  }
+	  }
+	  
+	  // make skin orange
+	  for (int x = 1968; x < 2800; x++) {
+		  for (int y = 1672; y < 2872; y++) {
+			  currentPixel = getPixel(x, y);
+			  if (currentPixel.getRed() < 200 &&
+					  currentPixel.getGreen() < 200 &&
+					  currentPixel.getBlue() < 200) {
+				  newPixel = getPixel(x, y);
+				  newPixel.setColor(Color.ORANGE);
+			  }
+		  }
+	  }
+  }
+  
+  /**
+   * Method to copy all pixels but white to another picture
+   * @param newPic new picture to copy to
+   */
+  public void copyAllButWhite(Picture newPicture) {
+	  Pixel currentPixel, newPixel;
+	  
+	  for (int sourceX = 0, targetX = 0; sourceX < getWidth(); sourceX++, targetX++) {
+		  for (int sourceY = 0, targetY = 0; sourceY < getHeight(); sourceY++, targetY++) {
+			  currentPixel = getPixel(sourceX, sourceY);
+			  if (currentPixel.getRed() < 200 && 
+					  currentPixel.getGreen() < 200 &&
+					  currentPixel.getBlue() < 200) {
+				  newPixel = newPicture.getPixel(targetX, targetY);
+			  	  newPixel.setColor(currentPixel.getColor());
+			  }
+		  }
+	  }  
+  }
+  
+  
+  /**
    * Method to do chromakey using a blue background
    * @param newBg the new background image to use to replace
    * the blue from the current picture
@@ -420,6 +489,48 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  /**
+   * Method to do simple edge detection by comparing the absolute
+   * value of the difference between the color intensities 
+   * (average of the color values) between a pixel and the pixel below it. If the 
+   * absolute value of the difference between the color intensities is 
+   * less than a passed amount the top 
+   * pixel color will be set to white.
+   * Otherwise it is set to black.
+   * @param amount if the absolute value of the differences in the 
+   * color average is less that this
+   * set the color to white, else black
+   */
+  
+  public void edgeDetectionArea(double amount, int startX, int endX, int startY, int endY) {
+	  Pixel topPixel, bottomPixel;
+	  double topAverage = 0D, bottomAverage = 0D;
+	  
+	  
+	  // loop through y (row) values from 0 to height - 1
+	  for (int y = startY; y < endY; y++) {
+		  // loop through x(col) values from 0 to width
+		  for (int x = startX; x < endX; x++) {
+			  // get the top and bottom pixels
+			  topPixel = getPixel(x, y);
+			  bottomPixel = getPixel(x, y+1);
+			  
+			  // get the color averages for the two pixels
+			  topAverage = topPixel.getAverage();
+			  bottomAverage = bottomPixel.getAverage();
+			  
+			  // check if the absolute value of the difference is less than the amount
+			  if (Math.abs(topAverage - bottomAverage) < amount)
+				  // value is lower then the amount
+				  topPixel.setColor(Color.WHITE);
+			  else
+				  // else set the color to black
+				  topPixel.setColor(Color.BLACK);
+		  }
+	  }
+	  
+  }
+  
   
   /**
    * Method to do simple edge detection by comparing the absolute
@@ -511,6 +622,7 @@ public class Picture extends SimplePicture
 	  return target;
   }
   
+ 
   /**
    * Method that will mirror Victor's head vertically (ex 5.3)
    */
@@ -727,9 +839,9 @@ public class Picture extends SimplePicture
 	  Pixel sourcePixel, targetPixel;
 	  
 	  // loop through the columns
-	  for (int sourceX = 0, targetX = xStart; sourceX < sourcePicture.getWidth(); sourceX++, targetX++) {
+	  for (int sourceX = 0, targetX = xStart; sourceX < sourcePicture.getWidth() - 1; sourceX++, targetX++) {
 		  // loop through the rows
-		  for (int sourceY = 0, targetY = yStart; sourceY < sourcePicture.getHeight(); sourceY++, targetY++) {
+		  for (int sourceY = 0, targetY = yStart; sourceY < sourcePicture.getHeight() - 1 ; sourceY++, targetY++) {
 			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
 			  targetPixel = getPixel(targetX, targetY);
 			  targetPixel.setColor(sourcePixel.getColor());

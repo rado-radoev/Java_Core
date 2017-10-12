@@ -4,6 +4,23 @@ public class PixelTester {
 
 	public static void main(String[] args) {
 		Picture pic = 
+				new Picture("victorAndI.jpg");
+		pic.makeFun();
+		pic.explore();
+	}
+	
+	public static void testMethod17() {
+		Picture pic = 
+				new Picture("whiteFlower.jpg");
+		Picture newPic = 
+				new Picture(pic.getWidth(), pic.getHeight());
+		
+		pic.copyAllButWhite(newPic);
+		newPic.explore();
+	}
+	
+	public static void testMethod16() {
+		Picture pic = 
 				new Picture("blue-mark.jpg");
 		Picture newBg = 
 				new Picture("moon-surface.jpg");
