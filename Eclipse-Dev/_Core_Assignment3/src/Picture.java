@@ -88,12 +88,16 @@ public class Picture extends SimplePicture {
 	}
 
 	public void increaseRed2() {
-		increaseColor(30, Color.RED);
+		increaseRed2(30);
 	}
 
 	public void increaseRed2(double amount) {
 		increaseColor(amount, Color.RED);
 	}
+	
+
+
+
 
 	private void increaseColor(double amount, Color color) {
 		// get all the pixels
@@ -123,194 +127,66 @@ public class Picture extends SimplePicture {
 	 * Method to increase the amount of red by 30%
 	 */
 	public void increaseRed() {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getRed();
-
-			// change the value to 1.3 time it was
-			value = (int) (value * 1.3);
-
-			// set the new red value to 1.3 times it was
-			pixel.setRed(value);
-
-			// increment index
-			index++;
-		}
+		increaseRed2(30);
 	}
-
+	
 	/**
 	 * Method to increase the amount of red by specified amount
-	 * 
-	 * @param amount
-	 *            with which to increase the red
+	 * @param amount 
+	 * 					with which to increase the red
 	 */
 	public void increaseRed(double amount) {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getRed();
-
-			// change the value to amount
-			value = (int) (value * amount);
-
-			// set the new red value to amount
-			pixel.setRed(value);
-
-			// increment index
-			index++;
-		}
+		increaseColor(amount, Color.RED);
 	}
+
 
 	/**
 	 * Method to increase the amount of green by 30%
 	 */
 	public void increaseGreen() {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getGreen();
-
-			// change the value to 1.3 time it was
-			value = (int) (value * 1.3);
-
-			// set the new red value to 1.3 times it was
-			pixel.setGreen(value);
-
-			// increment index
-			index++;
-		}
+		increaseGreen(30);
 	}
-
+	
 	/**
 	 * Method to increase the amount of green by specific amount
-	 * 
-	 * @param amount
-	 *            with which to increase the green
+	 * @param amount 
+	 * 					with which to increase the green
 	 */
 	public void increaseGreen(double amount) {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getGreen();
-
-			// change the value to the amount time it was
-			value = (int) (value * amount);
-
-			// set the new red value to amount times
-			pixel.setGreen(value);
-
-			// increment index
-			index++;
-		}
+		increaseColor(amount, Color.GREEN);
 	}
 
 	/**
 	 * Method to increase the amount of blue by 30%
 	 */
 	public void increaseBlue() {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getBlue();
-
-			// change the value to 1.3 time it was
-			value = (int) (value * 1.3);
-
-			// set the new red value to 1.3 times it was
-			pixel.setBlue(value);
-
-			// increment index
-			index++;
-		}
+		increaseBlue(30);
 	}
 
 	/**
 	 * Method to increase the amount of blue by specific amount
-	 * 
-	 * @param amount
-	 *            with which to increase the color
+	 * @param amount 
+	 * 					with which to increase the color
 	 */
 	public void increaseBlue(double amount) {
-		Pixel[] pixelArray = getPixels();
-		Pixel pixel;
-		int value, index = 0;
-
-		// loop through all the pixels
-		while (index < pixelArray.length) {
-
-			// get the current pixel
-			pixel = pixelArray[index];
-
-			// get the value or red
-			value = pixel.getBlue();
-
-			// change the value to amount
-			value = (int) (value * amount);
-
-			// set the new red value to amount
-			pixel.setBlue(value);
-
-			// increment index
-			index++;
-		}
+		increaseColor(amount, Color.BLUE);
 	}
 
 	/**
-	 * Method that blurrs within specified rectangle
+	 * Method that blurs within specified rectangle
 	 * 
 	 * @param x
 	 *            upper left point of origin
 	 * @param y
 	 *            upper left point of origin
 	 * @param width
-	 *            widht of the blurr rectangle
+	 *            width of the blur rectangle
 	 * @param height
-	 *            height of the blurr rectangle
+	 *            height of the blur rectangle
 	 * @param blurrPixels
-	 *            number of pixels to average in all directions, blurr strength
+	 *            number of pixels to average in all directions, blur strength
 	 */
-	public void blurr(int startX, int startY, int width, int height,
+	public void blur(int startX, int startY, int width, int height,
 			int blurrPixels) {
 		Pixel pixel, samplePixel;
 
@@ -354,5 +230,123 @@ public class Picture extends SimplePicture {
 			}
 		}
 	}
+	
+	
+	
+	/**
+	 * Method to do edge detection by comparing the absolute value of the difference
+	 * between the color intensities (average of the color values) between a pixel 
+	 * and the pixel below it. If the absolute value of the difference between
+	 * the color intensities is less than a passed amount the top pixel color will be set to one color.
+	 * Otherwise it is set to another color.
+	 * @param toColor top color that will replace any light color
+	 * @param bottomColor bottom color that will replace any dark color
+	 * @param amount if the absolute value of the differences in the color average is less than
+	 * this, set the color to topColor, else to bottomColor
+	 * @param startX starting x position
+	 * @param endX ending x position
+	 * @param startY starting y position
+	 * @param endY ending y position
+	 */
+	public void edgeDetection(Color topColor, Color bottomColor, double amount, int startX, int endX, int startY, int endY) {
+		Pixel topPixel, bottomPixel;
+		double topAverage, bottomAverage;
+		
+		 // loop through the y values from 0 to height - 1
+		for (int y = startY; y < endY; y++) {
+			// loop through the x values from 0 to width
+			for (int x = startX; x < endX; x++) {
+				// get the top and bottom pixel
+				topPixel = getPixel(x, y);
+				bottomPixel = getPixel(x, y+1);
+				
+				// get the color averages for the two pixels
+				topAverage = topPixel.getAverage();
+				bottomAverage = bottomPixel.getAverage();
+				
+				// check if the absolute value of the difference is less than the amount
+				if (Math.abs(topAverage - bottomAverage) < amount) {
+					topPixel.setColor(topColor);
+				}
+				else {
+					topPixel.setColor(bottomColor);
+				}
+			}
+ 		}
+	}
+	
+	/**
+	 * Method to pixelate picture by specific pixel size
+	 * @param pixelSize the size of the pixel when pixelating the image
+	 */
+	public void pixelate(int pixelSize) {
+		Pixel sourcePixel, destPixel;
+		
+		// loop through the rows until height - pixelSize is reached
+		for(int y = 0; y < getHeight() - pixelSize; y += pixelSize) {
+			// loop through the columns until width - pixelSize is reached
+		    for(int x = 0; x < getWidth() - pixelSize; x += pixelSize) {
 
+		        // get the current pixel
+		        sourcePixel = getPixel(x, y);
+
+		        // loop through the neighboring pixels and copy the current pixel there
+		        for(int yy = y; (yy < y + pixelSize) && (yy < getHeight() - pixelSize); yy++) {
+		            for(int xx = x; (xx < x + pixelSize) && (xx < getWidth() - pixelSize); xx++) {
+		                destPixel = getPixel(xx, yy);
+		                destPixel.setColor(sourcePixel.getColor());
+		            }
+		        }
+		    }
+		}
+	}
+	
+	
+	/**
+	 * Method turns pixels with an average color < 85 to green.
+	 * Pixels with an average color < 170 to red.
+	 * All other pixels to blue.
+	 */
+	public void changePixels() {
+		Pixel pixel;
+		
+		// loop through the columns
+		for (int x = 0; x < getWidth(); x++) {
+			// loop through the rows
+			for (int y = 0; y < getHeight(); y++) {
+				pixel = getPixel(x, y);
+				
+				if (pixel.getAverage() < 85) 
+					pixel.setColor(Color.GREEN);
+				else if (pixel.getAverage() < 170)
+					pixel.setColor(Color.RED);
+				else
+					pixel.setColor(Color.BLUE);
+			}
+		}
+	}
+	
 } // this } is the end of class Picture, put all new methods before this
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
