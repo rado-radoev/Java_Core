@@ -3,6 +3,16 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+
+		Picture pic = 
+				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\blue-mark.jpg");
+		Picture newBg1 = 
+				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\halo_clean_background.jpg");
+		pic.chromakeyShorter(newBg1);
+		pic.explore();
+	}
+	
+	public static void testMethod21() {
 		Picture pic1 = 
 				new Picture("KatieFancy.jpg");
 		Picture pic2 =
@@ -11,7 +21,6 @@ public class PixelTester {
 				new Picture("640x480.jpg");
 		pic3.overlapPictures(pic1, pic2, 150);
 		pic3.explore();
-				
 	}
 	
 	public static void testMethod20() {
