@@ -3,6 +3,32 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		Picture pic1 = 
+				new Picture("KatieFancy.jpg");
+		Picture pic2 =
+				new Picture("JenParty.jpg");
+		Picture pic3 = 
+				new Picture("640x480.jpg");
+		pic3.overlapPictures(pic1, pic2, 150);
+		pic3.explore();
+				
+	}
+	
+	public static void testMethod20() {
+		Picture pic = 
+				new Picture("grayMotorcycle.jpg");
+		pic.drawWideX(Color.RED, 5);
+		pic.show();
+	}
+	
+	public static void testMethod19() {
+		Picture pic = 
+				new Picture("640x480.jpg");
+		pic.drawRectangles();
+		pic.show();
+	}
+	
+	public static void testMethod18() {
 		Picture pic = 
 				new Picture("barbara.jpg");
 		pic.blur(20);

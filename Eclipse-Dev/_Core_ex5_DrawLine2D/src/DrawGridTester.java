@@ -7,7 +7,7 @@ public class DrawGridTester {
 		DrawGrid grid = new DrawGrid();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(grid);
-		frame.setSize(250,250);
+		frame.setSize(270,250);
 		frame.setVisible(true);
 	}
 }

@@ -1,10 +1,14 @@
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.awt.geom.Ellipse2D.Double;
 import java.awt.image.BufferedImage;
 import java.text.*;
 import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
+
+import com.sun.javafx.geom.Ellipse2D;
 
 import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
@@ -93,6 +97,211 @@ public class Picture extends SimplePicture
      String fileName = FileChooser.pickAFile();
      Picture pictObj = new Picture(fileName);
      pictObj.explore();
+  }
+  
+  /**
+   * Method to overlap one picture with another
+   * horizontally on top of the current picture. First
+   * the part of the first picture before the overlap will be displayed, 
+   * next to that will be the overlapping region
+   * up to the end of the first picture, after that
+   * is the remainder of the second picture
+   * @param p1 the first picture to display
+   * @param p2 the second picture to display
+   * @param startOverlap the x position where the overlap begins
+   */
+  public void overlapPictures(Picture p1, Picture p2, int startOverlap) {
+	  int amountOverlap = p1.getWidth() - startOverlap;
+	  
+	  // get the Graphics2D object
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  // draw p1 up to overlap point
+	  g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 1.0f));
+	  
+	  g2d.drawImage(p1.getImage(), 0, 0, startOverlap, p1.getHeight(),
+			  0, 0, startOverlap, p1.getHeight(),
+			  null);
+	  
+	  // draw p1 in the overlap area (replace background)
+	  g2d.drawImage(p1.getImage(), startOverlap,  0,  p1.getWidth(), p1.getHeight(),
+			  startOverlap, 0, p1.getWidth(), p1.getHeight(),
+			  null);
+	  
+	  // set the composite to blend old and new pixels - 50%
+	  g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.5f));
+	  
+	  g2d.drawImage(p2.getImage(), startOverlap, 0, p2.getWidth() + startOverlap,
+			  p2.getHeight(), amountOverlap, 0, p2.getWidth(),
+			  p2.getHeight(), null);
+	  
+	  // draw p2 after the overlap
+	  g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 1.0f));
+	  
+	  g2d.drawImage(p2.getImage(), p1.getWidth(), 0, p2.getWidth() + startOverlap,
+			  p2.getHeight(), amountOverlap, 0, p2.getWidth(),
+			  p2.getHeight(), null);
+  }
+  
+  /**
+   * Method to add a gradient painted sun to the current picture
+   * @param x the x location for the upper left corner of the rectangle enclosing the sun
+   * @param y the y location for the upper left corner of the rectangle enclosing the sun
+   * @param witdh the width of the enclosing rectangle
+   * @param height the height of the enclosing rectangle 
+   */
+  public void drawSun(int x, int y, int width, int height) {
+	  // get the graphics2D object for the picture
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  // create the gradient for painting from yellow to red with
+	  // yellow at the top of the sun and red at the bottom
+	  float xMid = (float) (width / 0.5 + x);
+	  GradientPaint gPaint = new GradientPaint(xMid, y, Color.YELLOW, xMid, y + height, Color.RED);
+	  
+	  // set the gradient and draw the ellipse
+	  g2d.setPaint(gPaint);
+	  //g2d.fill(new Ellipse2D.Double(x, y, width, height));
+  
+  }
+  
+  
+  /**
+   * Method to create a new picture by shearing the current picture
+   * by the x and y factors
+   * @param xFactor multiplier to use to shift in x directions based on y index
+   * @param yFactor multiplier to use to shift in y directions based on x index
+   * @return the resulting picture
+   */
+  public Picture shear(double xFactor, double yFactor) {
+	  // set up the shear transform
+	  AffineTransform shearTransform = new AffineTransform();
+	  shearTransform.shear(xFactor, yFactor);
+	  Rectangle2D rect = getTransformEnclosingRect(shearTransform);
+  
+	  // create a new picture object, big enough to hold the result
+	  Picture result = new Picture((int) (Math.ceil(rect.getWidth())),
+			  (int) (Math.ceil(getHeight())));
+  
+	  // get the graphics 2d object from the result
+	  Graphics g = result.getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+  
+	  // save the current transformation and set-up to center the new image
+	  AffineTransform savedTrans = g2d.getTransform();
+	  AffineTransform centerTrans = new AffineTransform();
+	  centerTrans.translate(0 - rect.getX(), 0 - rect.getY());
+	  g2d.setTransform(centerTrans);
+	  
+	  // draw the current image onto the result image shared
+	  g2d.drawImage(getImage(), shearTransform, null);
+	  
+	  // reset g2d transformation to the saved one
+	  g2d.setTransform(savedTrans);
+	  
+	  return result;
+  }
+  
+  
+  
+  /**
+   * Method to create a new picture by scaling the current
+   * picture by the given x and y factors
+   * @param xFactor the amount to scale in x
+   * @param yFactor the amount to scale in y
+   * @return the resulting picture
+   */
+  public Picture scale(double xFactor, double yFactor) {
+	  // set up the scale transform
+	  AffineTransform scaleTransform = new AffineTransform();
+	  scaleTransform.scale(xFactor, yFactor);
+	  
+	  //create a new picture that is the right size
+	  Picture result = new Picture((int) (getWidth() * xFactor),
+			  (int) (getHeight() * yFactor));
+			  
+	  // get the graphcis 2D object to draw on the result
+	  Graphics g = result.getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  // draw the current image onto tthe result image scaled
+	  g2d.drawImage(getImage(), scaleTransform, null);
+	  
+	  return result;
+  }
+  
+  /**
+   * Method to copy the passed picture into the current picture
+   * at the given x and y position in the current picture
+   * @param source the picture to copy
+   * @param x the x of the upper left corner to copy to
+   * @param y the y of the upper left corner to copy to
+   */
+  public void copy2D(Picture source, int x, int y) {
+	  // get the graphics object
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  // copy the image
+	  g2d.drawImage(source.getImage(), x, y, null);
+  }
+  
+  /**
+   * Method to copy the passed picture into the current picture
+   * at the given x and y position in the current picture
+   * @param source the picture to copy
+   * @param x the x of the upper left corner to copy to
+   * @param y the y of the upper left corner to copy to
+   */
+  public void copy(Picture source, int x, int y) {
+	  // get the graphics object
+	  Graphics g = getGraphics();
+	  
+	  // copy the image
+	  g.drawImage(source.getImage(), x, y, null);
+  }
+  
+  /**
+   * Method to add two crossed lines to a picture.
+   * One line will go from the top left corner to the
+   * bottom right corner. The other will go from the bottom left
+   * corner to the top right corner.
+   */
+  public void drawWideX(Color color, float width) {
+	  // get the Graphics2D object
+	  Graphics graphics = getGraphics();
+	  Graphics2D g2 = (Graphics2D) graphics;
+	  
+	  // set the color and brush width
+	  g2.setPaint(color);
+	  g2.setStroke(new BasicStroke(width));
+	  
+	  // get the max x and y values
+	  int maxX = getWidth() - 1;
+	  int maxY = getHeight() - 1;
+	  
+	  // draw the lines
+	  g2.draw(new Line2D.Double(0,0,maxX, maxY));
+	  g2.draw(new Line2D.Double(0, maxY, maxX, 0));
+  }
+  
+  /**
+   * Method to draw a picture with a succession of rectangles
+   * on the current picture
+   */
+  public void drawRectangles() {
+	  Graphics g = getGraphics();
+	  Color color = null;
+	  
+	  // loop 25 times 
+	  for (int i = 25; i > 0; i--) {
+		  g.setColor(Color.BLACK);
+		  g.drawRect(i, i, i * 3, i * 4);
+		  g.drawRect(100 + i * 4, 100 + i * 3, i * 8, i * 10);
+	  }
+	  
   }
   
   /**
