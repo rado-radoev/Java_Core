@@ -377,7 +377,7 @@ public class Picture extends SimplePicture
    * @param newBg the new background image to use to replace
    * the blue from the current picture
    */
-  public void chromakeyShorter(Picture newBg, int x, int y, int width, int heigh) {
+  public void chromakeyShorter(Picture newFg, int x, int y, int width, int heigh) {
 	  Pixel[] pixelArray = getPixels();
 	  Pixel currentPixel, newPixel;
 	  
@@ -386,13 +386,17 @@ public class Picture extends SimplePicture
 		  // get current pixel
 		  currentPixel = pixelArray[i];
 		  
-		  /* if the color at the current pixel is mostly blue
-		   * (blue value is greater than green and red combined)
-		   * then use the new background
-		   */
-		  if (currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue()) {
-			  newPixel = newBg.getPixel(currentPixel.getX(), currentPixel.getY());
-			  currentPixel.setColor(newPixel.getColor());
+		  // if the desired pixel is mostly blue and is at the specified x and y position
+		  if ((currentPixel.getX() == x && currentPixel.getY() == y) 
+				  && currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue()) {
+			  
+			  // start copying the pixel from the foreground picture
+			  for (int xx = x, fgPixX = 0; xx < x + width; xx++, fgPixX++) {
+				  for (int yy = y, fgPixY = 0; yy < y + heigh; yy++, fgPixY++) {
+					  newPixel = newFg.getPixel(fgPixX, fgPixY);
+					  currentPixel.setColor(newPixel.getColor());
+				  }
+			  }
 		  }
 	  }
   }

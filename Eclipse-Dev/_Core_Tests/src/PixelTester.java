@@ -8,7 +8,7 @@ public class PixelTester {
 				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\blue-mark.jpg");
 		Picture newBg1 = 
 				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\halo_clean_background.jpg");
-		pic.chromakeyShorter(newBg1);
+		pic.chromakeyShorter(newBg1,283,171, newBg1.getWidth(), newBg1.getHeight());
 		pic.explore();
 	}
 	
