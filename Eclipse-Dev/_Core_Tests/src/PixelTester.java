@@ -3,7 +3,23 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
+		Picture pic = 
+				new Picture("blue-mark.jpg");
+		Picture newBg = 
+				new Picture("beach.jpg");
+		Picture halo = 
+				new Picture("halo_clean_background_cropped.jpg");
+		Picture newBg1 = new Picture(pic.getWidth(), pic.getHeight());
+		
+		pic.chromakey(newBg);
+		pic.explore();
+		
+		newBg1.chromakey(halo, pic, 262, 89, halo.getWidth(), halo.getHeight()).explore();
+		//halo.explore();
 
+	}
+	
+	public static void testMethod22() {
 		Picture pic = 
 				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\blue-mark.jpg");
 		Picture newBg1 = 

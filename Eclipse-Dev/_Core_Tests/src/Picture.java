@@ -100,6 +100,97 @@ public class Picture extends SimplePicture
   }
   
   /**
+   * Method to display a foreground image on top of a background image at specific location 
+   * and with specific width and height
+   * @param foreground the foreground image
+   * @param background the background image
+   * @param startX the top most x position of the foreground image
+   * @param startY the top most y position of the foreground image
+   * @param width the width of the foreground image
+   * @param height the height of the foreground image
+   * @return new image containing background and foregroud images
+   */
+  public Picture chromakey(Picture foreground, Picture background,
+		  int startX, int startY, int width, int height) {
+	  
+	  // temporary picture to be returned
+	  Picture target = new Picture(background.getWidth(), background.getHeight());
+	  
+	  // foreground, background and target pixels
+	  Pixel fgPixel, bgPixel, tgPixle;
+	  
+	  // loop through background image columns
+	  for (int backgroundX = 0; backgroundX < background.getWidth(); backgroundX++) {
+		  
+		  // loop through background image rows
+		  for (int backgroundY = 0; backgroundY < background.getHeight(); backgroundY++) {
+			  
+			  // get the pixels at current background and target picture
+			  bgPixel = background.getPixel(backgroundX, backgroundY);
+			  tgPixle = target.getPixel(backgroundX, backgroundY);
+			  
+			  // if the current pixel position is in the range of x + width and y + height
+			  // copy the foreground pixel, only if it is yellow
+			  // otherwise copy the background pixel to target
+			  if ((backgroundX > startX && backgroundX < startX + width) && 
+					  (backgroundY > startY && backgroundY < startY + height)) {
+				  
+				  // get the current foreground pixel
+				  fgPixel = foreground.getPixel(backgroundX - startX, backgroundY - startY);
+				  
+				  // if current foreground pixel is mostly green
+				  if (fgPixel.colorDistance(Color.GREEN) < 200) {
+					  // set the target pixel to the background pixel
+					  tgPixle.setColor(bgPixel.getColor());
+				  }
+				  else {
+					  // if the pixel is not greenish, then it will be displayed
+					  tgPixle.setColor(fgPixel.getColor());					  
+				  }
+			  }
+			  else {
+				  // if not in the range of foreground pixels, display the background pixel
+				  tgPixle.setColor(bgPixel.getColor());
+			  }
+		  }
+	  }
+	  // return the temporary image
+	  return target;
+  }
+  
+  /**
+   * Method to get a foreground image and background image and output new image
+   */
+  public Picture chromakey(Picture foreground, Picture background) {
+	  Pixel foregroundPixel, backgroundPixel, outputPicturePixel;
+	  Picture targetPicture = new Picture(foreground.getWidth(), foreground.getHeight());
+	  
+	  
+	  // loop through the columns
+	  for (int x = 0; x < getWidth(); x++) {
+		  // loop through the rows
+		  for (int y = 0; y < getHeight(); y++) {
+			  
+			  // get current foreground and background pixels
+			  foregroundPixel = foreground.getPixel(x, y);
+			  backgroundPixel = background.getPixel(x, y);
+			  outputPicturePixel = targetPicture.getPixel(x, y);
+			  
+			  // if the color at the current pixel is mostly blue 
+			  // then use the background pixel color
+			  if (foregroundPixel.getRed() + foregroundPixel.getGreen() < 
+					  foregroundPixel.getBlue()) {
+				  outputPicturePixel.setColor(backgroundPixel.getColor());
+			  }
+			  else {
+				  outputPicturePixel.setColor(foregroundPixel.getColor());
+			  }
+		  }
+	  }
+	  return targetPicture;
+  }
+  
+  /**
    * Method to overlap one picture with another
    * horizontally on top of the current picture. First
    * the part of the first picture before the overlap will be displayed, 
