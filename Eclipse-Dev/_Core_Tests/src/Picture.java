@@ -132,8 +132,9 @@ public class Picture extends SimplePicture
 			  // if the current pixel position is in the range of x + width and y + height
 			  // copy the foreground pixel, only if it is yellow
 			  // otherwise copy the background pixel to target
-			  if ((backgroundX > startX && backgroundX < startX + width) && 
-					  (backgroundY > startY && backgroundY < startY + height)) {
+			  if (((backgroundX > startX && backgroundX < startX + width) && 
+					  (backgroundY > startY && backgroundY < startY + height)) &&
+					  bgPixel.colorDistance(Color.BLUE) < 200) {
 				  
 				  // get the current foreground pixel
 				  fgPixel = foreground.getPixel(backgroundX - startX, backgroundY - startY);

@@ -11,8 +11,8 @@ public class PixelTester {
 				new Picture("halo_clean_background_cropped.jpg");
 		Picture newBg1 = new Picture(pic.getWidth(), pic.getHeight());
 		
-		pic.chromakey(newBg);
-		pic.explore();
+		//pic.chromakey(newBg);
+		//pic.explore();
 		
 		newBg1.chromakey(halo, pic, 262, 89, halo.getWidth(), halo.getHeight()).explore();
 		//halo.explore();
