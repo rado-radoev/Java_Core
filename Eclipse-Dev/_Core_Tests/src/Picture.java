@@ -99,6 +99,77 @@ public class Picture extends SimplePicture
      pictObj.explore();
   }
   
+  public void drawRainbow() {
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  for (int i = 1; i < 5; i++) {
+		  GradientPaint gPaint = new GradientPaint(300 + i * 2, 300 - i * 3, new Color(i * 10, i * 5, i),
+				  0 + i * 10, 150 - i, new Color(i * 5, i, i * 9));
+		  g2d.setPaint(gPaint);
+		  g2d.fillArc(100, 100+ i * 20, 400, 150, 360, 180);
+	  }
+
+	  
+  }
+  
+  /**
+   * Method to draw an object onto another object
+   * @param source
+   * @param x
+   * @param y
+   */
+  public void cabanaOnBeach(Picture source, int x, int y) {
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  g2d.drawImage(source.getImage(), 150, 150, null);
+  }
+  
+
+  
+  /**
+   * Method that draws a conversation balloon
+   */
+  public void drawConversationBubble() {
+	  // get graphics
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  for (int i = 5; i > 0; i--) {
+		  g2d.fillOval(350 + i * 30, 180 - i * 25, i * 8, i * 10);
+	  }
+
+  }
+  
+  /**
+   * Method that draws a house
+   */
+  public void drawHouse() {
+	  // get graphics object
+	  Graphics g = getGraphics();
+	  Graphics2D g2d = (Graphics2D) g;
+	  
+	  // draw house skeleton
+	  g2d.setColor(Color.RED);
+	  g2d.setStroke(new BasicStroke(5));
+	  g2d.drawRect(150, 150, 400, 300);
+	  
+	  
+	  // draw roof
+	  g2d.drawLine(150, 150, 350, 20);
+	  g2d.drawLine(350, 20, 550, 150);
+	  
+	  // draw door
+	  g2d.drawRect(370, 270, 100, 165);
+	  g2d.fillOval(390, 356, 10, 10);
+	  
+	  // draw window
+	  g2d.drawRect(174, 180, 80, 80);
+	  g2d.drawLine(174 + 80 / 2, 180, 174 + 80 /2, 180 + 80);
+	  g2d.drawLine(174, 180 + 80 / 2 , 174 + 80, 180 + 80 / 2);
+  }
+  
   /**
    * Method to display a foreground image on top of a background image at specific location 
    * and with specific width and height

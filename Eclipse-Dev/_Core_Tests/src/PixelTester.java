@@ -4,6 +4,28 @@ public class PixelTester {
 
 	public static void main(String[] args) {
 		Picture pic = 
+				new Picture("640x480.jpg");
+		pic.drawRainbow();
+		pic.explore();
+	}
+	
+	public static void testMethod25() {
+		Picture pic = 
+				new Picture("blue-mark.jpg");
+
+		pic.drawConversationBubble();
+		pic.explore();
+	}
+	
+	public static void testMethod24() {
+		Picture house = 
+				new Picture("640x480.jpg");
+		house.drawHouse();
+		house.explore();
+	}
+	
+	public static void testMethod23() {
+		Picture pic = 
 				new Picture("blue-mark.jpg");
 		Picture newBg = 
 				new Picture("beach.jpg");
@@ -16,7 +38,6 @@ public class PixelTester {
 		
 		newBg1.chromakey(halo, pic, 262, 89, halo.getWidth(), halo.getHeight()).explore();
 		//halo.explore();
-
 	}
 	
 	public static void testMethod22() {
