@@ -88,9 +88,6 @@ public class Picture extends SimplePicture
   
   public static void main(String[] args) 
   {
-//     String fileName = FileChooser.pickAFile();
-//     Picture pictObj = new Picture(fileName);
-//     pictObj.explore();
 	  
 		Picture pic = 
 				new Picture("blue-mark.jpg");
