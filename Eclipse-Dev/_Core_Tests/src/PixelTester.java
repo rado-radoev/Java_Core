@@ -3,10 +3,12 @@ import java.awt.Color;
 public class PixelTester {
 
 	public static void main(String[] args) {
-		Picture pic = 
-				new Picture("640x480.jpg");
-		pic.drawRainbow();
-		pic.explore();
+//		Picture pic = 
+//				new Picture("640x480.jpg");
+//		pic.drawRainbow();
+//		pic.explore();
+		
+		testMethod23();
 	}
 	
 	public static void testMethod25() {
@@ -26,17 +28,17 @@ public class PixelTester {
 	
 	public static void testMethod23() {
 		Picture pic = 
-				new Picture("blue-mark.jpg");
-		Picture newBg = 
-				new Picture("beach.jpg");
+				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\blue-mark.jpg");
+//		Picture newBg = 
+//				new Picture("beach.jpg");
 		Picture halo = 
-				new Picture("halo_clean_background_cropped.jpg");
+				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\halo_clean_background_cropped.jpg");
 		Picture newBg1 = new Picture(pic.getWidth(), pic.getHeight());
 		
 		//pic.chromakey(newBg);
 		//pic.explore();
 		
-		newBg1.chromakey(halo, pic, 262, 89, halo.getWidth(), halo.getHeight()).explore();
+		newBg1.chromakey(halo, pic, 262, 89, halo.getWidth(), halo.getHeight()).show();
 		//halo.explore();
 	}
 	
@@ -44,7 +46,7 @@ public class PixelTester {
 		Picture pic = 
 				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\blue-mark.jpg");
 		Picture newBg1 = 
-				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\halo_clean_background.jpg");
+				new Picture("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\halo_clean_background_cropped.jpg");
 		pic.chromakeyShorter(newBg1,283,171, newBg1.getWidth(), newBg1.getHeight());
 		pic.explore();
 	}
