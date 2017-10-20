@@ -74,6 +74,22 @@ public class Sound extends SimpleSound
     return output;
   }
   
+  /**
+   * Method that will halve the positive values and double 
+   * the volume of the negative values
+   */
+  public void halveVolume() {
+	  SoundSample[] sampleArray = getSamples();
+	  SoundSample sample;
+	  
+	  for (SoundSample soundSample : sampleArray) {
+		if (soundSample.getValue() >= 0)
+			soundSample.setValue((int) (soundSample.getValue() / 2));
+		else
+			soundSample.setValue((int)(soundSample.getValue() * 2));
+	}
+  }
+  
   
   /**
    * Method to set all the sample values to the maximum positive value if they were

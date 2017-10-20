@@ -11,12 +11,11 @@ public class SoundTester {
 		//sound2Louder.increaseVolume();
 		
 		//sound2Louder.explore();
-		sound2Louder.forceToExtreme();
-		sound2Louder.explore();
-		
+//		sound2Louder.halveVolume();
+//		sound2Louder.explore();
+//		
 //		sound2Louder.play();
-		
-		
+				
 		
 //		sound2Louder.writeToFile(FileChooser.getMediaPath("gettysburg10-louder.wav"));
 		
