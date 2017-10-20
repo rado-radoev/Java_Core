@@ -128,7 +128,8 @@ public class Picture extends SimplePicture
 			  bgPixel = background.getPixel(backgroundX, backgroundY);
 			  tgPixle = target.getPixel(backgroundX, backgroundY);
 			  
-			  // if the current pixel position is in the range of x + width and y + height
+			  // if the current pixel position is in the range of x + width and y + height 
+			  // and background is blue 
 			  // copy the foreground pixel, only if it is yellow
 			  // otherwise copy the background pixel to target
 			  if (((backgroundX > startX && backgroundX < startX + width) && 
