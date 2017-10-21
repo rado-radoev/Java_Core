@@ -74,6 +74,42 @@ public class Sound extends SimpleSound
     return output;
   }
   
+  /**
+   * Method to mirror a sound front to back
+   */
+  public void mirrorFrontToBack() {
+	  int length = getLength(); // save the length 
+	  int mirrorPoint = length / 2;  // mirror around this
+	  int value = 0; // hold the current value
+	  
+	  // loop from 0 to mirror point
+	  for (int i = 0; i < mirrorPoint; i++) {
+		  value = getSampleValueAt(i);
+		  setSampleValueAt(length - 1 - i, value);
+	  }
+  }
+  
+  /**
+   * Method to reverse the current sound
+   */
+  public void reverese() {
+	  Sound orig = new Sound(getFileName());
+	  int length = getLength();
+	  
+	  // loop through the samples
+	  for (int targetIndex = 0, sourceIndex = length - 1; 
+			  targetIndex < length && sourceIndex > 0;
+			  targetIndex++, sourceIndex--) {
+		  setSampleValueAt(targetIndex, orig.getSampleValueAt(sourceIndex));
+	  }
+  }
+  
+  /**
+   * Method to clips part of a sound file
+   * @param start the start index of the clip to cut
+   * @param end the end index of the clip to cut
+   * @return only the cutted clip
+   */
   public Sound clip(int start, int end) {
 	  // calculate the number of samples in the clip
 	  int lengthInSamples = end - start + 1;
