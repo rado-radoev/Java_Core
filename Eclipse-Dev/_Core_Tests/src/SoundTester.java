@@ -3,10 +3,20 @@ public class SoundTester {
 
 	public static void main(String[] args) throws SoundException {
 
-		String fileName = FileChooser.getMediaPath("preamble.wav");
-		Sound sound1 = new Sound(fileName);
+		String silence = FileChooser.getMediaPath("sec3silence.wav");
+		Sound target = new Sound(silence);
+		target.play();
+		target.splice();
+		target.play();
 		
-		Sound sound2Louder = new Sound(sound1);
+		
+		
+//		String fileName = FileChooser.getMediaPath("thisisatest.wav");
+//		Sound sound1 = new Sound(fileName);
+//		
+//		Sound sound2Louder = sound1.clip(0, 8500);
+//		sound2Louder.play();
+//		sound2Louder.explore();
 		
 		//sound2Louder.increaseVolume();
 		
