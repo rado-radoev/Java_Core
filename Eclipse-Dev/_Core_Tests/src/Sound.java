@@ -75,12 +75,109 @@ public class Sound extends SimpleSound
   }
   
   /**
+   * Method to mirror a sound front to back
+   */
+  public void mirrorFrontToBack() {
+	  int length = getLength(); // save the length 
+	  int mirrorPoint = length / 2;  // mirror around this
+	  int value = 0; // hold the current value
+	  
+	  // loop from 0 to mirror point
+	  for (int i = 0; i < mirrorPoint; i++) {
+		  value = getSampleValueAt(i);
+		  setSampleValueAt(length - 1 - i, value);
+	  }
+  }
+  
+  /**
+   * Method to reverse the current sound
+   */
+  public void reverese() {
+	  Sound orig = new Sound(getFileName());
+	  int length = getLength();
+	  
+	  // loop through the samples
+	  for (int targetIndex = 0, sourceIndex = length - 1; 
+			  targetIndex < length && sourceIndex > 0;
+			  targetIndex++, sourceIndex--) {
+		  setSampleValueAt(targetIndex, orig.getSampleValueAt(sourceIndex));
+	  }
+  }
+  
+  /**
+   * Method to clips part of a sound file
+   * @param start the start index of the clip to cut
+   * @param end the end index of the clip to cut
+   * @return only the cutted clip
+   */
+  public Sound clip(int start, int end) {
+	  // calculate the number of samples in the clip
+	  int lengthInSamples = end - start + 1;
+	  Sound target = new Sound(lengthInSamples); // hold clip
+	  int value = 0; // holds the current sample
+	  int targetIndex = 0;  // index in target sound
+	  
+	  // copy from start to end from source into target
+	  for (int i = start; i <= end; i++, targetIndex++) {
+		  value = getSampleValueAt(i);
+		  target.setSampleValueAt(targetIndex, value);
+	  }
+	  
+	  return target;
+  }
+  
+  /**
+   * Method to copy part of the passed sound into this sound at the given start index
+   * @param source the source sound to copy from
+   * @param soureStart the starting index to copy from in the source (the copy will include this)
+   * @param sourceStop the stopping index to copy to in the source (the copy will not include this)
+   * @param targetStart the index to start copying to
+   */
+  public void splice(Sound source, int sourceStart, int sourceStop, int targetStart) {
+	 // loop copying from source to target
+	  for (int sourceIndex = sourceStart, targetIndex = targetStart; 
+			  sourceIndex < sourceStop && targetIndex < getLength();
+			  sourceIndex++, targetIndex++) {
+		  setSampleValueAt(targetIndex, getSampleValueAt(sourceIndex));
+	  }
+  }
+  
+  /**
+   * Method to splice two sounds together with some silence
+   * between them into the current sound
+   */
+  public void splice() {
+	  Sound sound1 =
+			  new Sound(FileChooser.getMediaPath("guzdial.wav"));
+	  Sound sound2 = 
+			  new Sound(FileChooser.getMediaPath("is.wav"));
+	  int targetIndex = 0; // the starting place on the target
+	  int value = 0;
+	  
+	  // copy all of sound 1 into the current sound (target)
+	  for (int i = 0; i < sound1.getLength(); i++, targetIndex++) {
+		  value = sound1.getSampleValueAt(i);
+		  setSampleValueAt(targetIndex, value);
+	  }
+	  
+	  // create silence between words by setting values to 0
+	  for (int i = 0; i < ((int) (getSamplingRate() * .5)); i++, targetIndex++) {
+		  setSampleValueAt(targetIndex, value);
+	  }
+	  
+	  // copy all of sound 2 into the current sound (target)
+	  for (int i = 0; i < sound2.getLength();i++, targetIndex++) {
+		  value = sound2.getSampleValueAt(i);
+		  setSampleValueAt(targetIndex, value);
+	  }
+  }
+  
+  /**
    * Method that will halve the positive values and double 
    * the volume of the negative values
    */
   public void halveVolume() {
 	  SoundSample[] sampleArray = getSamples();
-	  SoundSample sample;
 	  
 	  for (SoundSample soundSample : sampleArray) {
 		if (soundSample.getValue() >= 0)
