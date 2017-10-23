@@ -75,6 +75,145 @@ public class Sound extends SimpleSound
   }
   
   /**
+   * Method to change the frequency of a sound by the passed factor
+   * @param factor the amount to increment the source index by. A number 
+   * greater than 1 will increase the frequency and the sound higher while a number
+   * less than one will decrease the frequency and make the sound lower.
+   */
+  public void changeFreq(double factor) {
+	  // make a copy of the original sound
+	  Sound s = new Sound(getFileName());
+	  
+	  /* loop through the sound and increment the target index
+	   * by one but increment the source index by the factor
+	   */
+	  for (double sourceIndex = 0, targetIndex = 0;
+			  targetIndex < this.getLength();
+			  sourceIndex += factor, targetIndex++) {
+		  if (sourceIndex >= s.getLength()) 
+			  sourceIndex = 0;
+		  
+		  setSampleValueAt((int) targetIndex, s.getSampleValueAt((int)sourceIndex));
+	  }
+  }
+  
+  /**
+   * Method to double the frequency of a sound by taking
+   * every second sample. The result will be a higher sound
+   */
+  public void doubleFreq() {
+	  // make a copy of the original sound
+	  Sound s = new Sound(getFileName());
+	  
+	  /*
+	   * Loop through the sound and increment target index
+	   * by one but source index by 2 and set target value
+	   * to the copy of the original sound
+	   */
+	  for (int sourceIndex = 0, targetIndex = 0; sourceIndex < getLength();
+			  sourceIndex += 2, targetIndex++) {
+		  setSampleValueAt(targetIndex, s.getSampleValueAt(sourceIndex));
+	  }
+	  
+	  // clear out the rest of this sound
+	  for (int i = getLength() / 2; i < getLength();i++) {
+		  setSampleValueAt(i , 0);
+	  }
+  }
+  
+  /**
+   * Method to create multiple echoes of the current sound
+   * @param delay the number of samples before the echo starts
+   * @param numEchoes number of echoes desired
+   * @return a new sound with the echoes in t
+   */
+  public Sound echo(int delay, int numEchoes) {
+	  int soundLength = getLength();
+	  Sound echoSound = new Sound(numEchoes * delay + soundLength);
+	  int value, echoIndex, echoValue;
+	  value = echoIndex = echoValue = 0;
+	  double echoAmplitude = 1; // to start
+	  
+	  // copy the original sound
+	  echoSound.splice(this, 0, soundLength, 0);
+
+	  // loop starting with 1 to create the first echo at the
+	  // right place and end when = the number of echoes
+	  for (int echoCount = 1; echoCount <= numEchoes; echoCount++) {
+		  // decrease the volume (amplitude) of the echo
+		  echoAmplitude *= 0.6;
+		  
+		  // echo the whole sound
+		  for (int i = 0; i < soundLength; i++) {
+			  echoIndex = i + (delay * echoCount);
+			  echoValue = (int) (getSampleValueAt(i) * echoAmplitude);
+			  echoSound.setSampleValueAt(echoIndex, echoValue + 
+					  echoSound.getSampleValueAt(echoIndex));
+		  }
+	  }
+	  
+	  return echoSound;
+  }
+  
+  
+  /**
+   * Method to add an echo to a sound
+   * @param delay the number of samples before the echo starts
+   */
+  public void echo(int delay) {
+	  // make a copy of the original sound
+	  Sound s = new Sound(getFileName());
+	  int value = 0;
+	  
+	  // loop from delay to end of sound
+	  for (int i = delay; i < s.getLength(); i++) {
+		  // get the values back by delay samples from the copy of the sound
+		  // and make it fainter
+		  value = (int) (s.getSampleValueAt(i - delay) * 0.6);
+		  
+		  // set the value at the current index to the sum
+		  // of the current value and the echo
+		  setSampleValueAt(i, getSampleValueAt(i) + value);
+	  }
+  
+  }
+  
+
+  
+  /**
+   * Method to overlap or blend two sounds. Start by copying the first 20,000 samples
+   * from sound1 into the current sound then copy the sum of half of sound1 and half of sound2
+   * for the next 20,000 samples and end with the next 20,000 samples from sound2.
+   */
+  public void blendSounds() {
+	  Sound sound1 = 
+			  new Sound(FileChooser.getMediaPath("aah.wav"));
+	  Sound sound2 = 
+			  new Sound(FileChooser.getMediaPath("bassoon-c4.wav"));
+	  int value = 0;
+	  
+	  // copy the first 20,000 samples from sound1 into current 
+	  for (int i = 0; i < 20000; i++) {
+		  setSampleValueAt(i, sound1.getSampleValueAt(i));
+	  }
+	  
+	  // copy the next 20,000 samples from sound1 and blend that with the first 20,000
+	  // samples from sound2
+	  for (int i = 0; i < 20000;i++) {
+		  value = (int) ((sound1.getSampleValueAt(i + 2000) * 0.5) + 
+				  (sound2.getSampleValueAt(i) * 0.5));
+		  
+		  setSampleValueAt(i + 2000, value);
+	  }
+	  
+	  // copy the next 20,000 samples from sound2 into the target
+	  for (int i = 2000; i < 40000; i++) {
+		  setSampleValueAt(i + 20000, sound2.getSampleValueAt(i));
+		  
+	  }
+  }
+  
+  /**
    * Method to mirror a sound front to back
    */
   public void mirrorFrontToBack() {
