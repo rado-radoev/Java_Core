@@ -277,7 +277,7 @@ public class Sound extends SimpleSound
 	  for (int sourceIndex = sourceStart, targetIndex = targetStart; 
 			  sourceIndex < sourceStop && targetIndex < getLength();
 			  sourceIndex++, targetIndex++) {
-		  setSampleValueAt(targetIndex, getSampleValueAt(sourceIndex));
+		  setSampleValueAt(targetIndex, source.getSampleValueAt(sourceIndex));
 	  }
   }
   
