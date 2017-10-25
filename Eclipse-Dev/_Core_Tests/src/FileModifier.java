@@ -43,7 +43,7 @@ public class FileModifier {
 				// modify the string
 				lineList.add(line.substring(0, pos) + changedText + line.substring(pos + textToChange.length()));
 				
-				// loop unitll the end of the file adding the rest
+				// loop until the end of the file adding the rest
 				while((line = reader.readLine()) != null) {
 					lineList.add(line);
 				}
