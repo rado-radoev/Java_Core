@@ -82,8 +82,13 @@ public class Steganographer {
 	 * Method to decode test from picture
 	 * @param PictureToDecode picture that was encoded using Steganographer encode method
 	 */
-	public void decode(Picture PictureToDecode) {
+	public void decode(Picture pictureToDecode) {
+		// get all the pixels
+		Pixel[] pixelArray = pictureToDecode.getPixels();
 		
+		for (int i = 0; i < pixelArray.length; i += 50) {
+			System.out.print((char) (pixelArray[i].getRed()));
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -97,8 +102,9 @@ public class Steganographer {
 		
 		// sten.encode(FileChooser.getMediaPath("parasites.txt"), butterfly, FileChooser.getMediaPath("encoded-butterfly1"));
 
-		// Picture pic = new Picture(FileChooser.getMediaPath("encoded-butterfly1.png"));
-		// pic.explore();
+		 Picture pic = new Picture(FileChooser.getMediaPath("encoded-butterfly1.png"));
+		 sten.decode(pic);
+		 // pic.explore();
 	}
 
 }
