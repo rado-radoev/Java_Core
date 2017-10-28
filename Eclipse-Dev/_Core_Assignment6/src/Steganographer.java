@@ -12,6 +12,8 @@ import java.util.List;
  *
  */
 public class Steganographer {
+	
+	private final int SKIPPIXEL = 50;
 
 	/**
 	 * Method to encode text from file to a picture
@@ -24,7 +26,6 @@ public class Steganographer {
 		// set up some values that will be used later on
 		int character = 0;
 		List info = new ArrayList<Integer>();
-		int value = 0;
 		Pixel pixel = null;
 		Pixel[] pixelArray = pictureToEncodeTo.getPixels();
 
@@ -40,35 +41,25 @@ public class Steganographer {
 			// loop through text and encode it into the picture
 			// while making sure we don't go over the text size or the picture size
 			// if the file is not empty of course
-			// we will rewrite every 5th pixel, so it isn't obvious what we are doing
-			// we will add the current char value to the current pixel color
+			// we will rewrite every 50th pixel, so it isn't obvious what we are doing
+			// we will replace the red color with the character(int value)
 			if (info.size() > 0) {
 				for (int fileIndex = 0, pictureIndex = 0; fileIndex < info.size() && 
-						pictureIndex < pixelArray.length; fileIndex++, pictureIndex += 50) {
-					
-					if (pictureIndex >= pixelArray.length) {
-						System.out.println("limit reached");
-					}
-					System.out.println("FileIndex: " + fileIndex);
-					System.out.println("Picture Index: " + pictureIndex);
-					
+						pictureIndex < pixelArray.length; fileIndex++, pictureIndex += SKIPPIXEL) {
+								
 					// cast current char to int
 					int currentChar = (int) info.get(fileIndex);
 					
 					// get the current pixel
 					pixel = pixelArray[pictureIndex];
 					
-					// add the char value to red color of the current pixel
-					// TO DO: can improve it, if the red + char value is > 255
-					// then move to the next color etc.
-					//value = pixel.getRed() + currentChar;
-					value = currentChar;
-					
-					// set pixel to the new value
-					pixel.setRed(value);
+				
+					// set the red pixel to the new char value
+					pixel.setRed(currentChar);
 				}
 			}
-			System.out.println(pixelArray.length);
+			
+			// write the new picture
 			pictureToEncodeTo.write(targetFileName + ".png");
 			
 		} catch (FileNotFoundException e) {
@@ -86,13 +77,15 @@ public class Steganographer {
 		// get all the pixels
 		Pixel[] pixelArray = pictureToDecode.getPixels();
 		
-		for (int i = 0; i < pixelArray.length; i += 50) {
+		// loop through all the pixels and convert the red color pixel
+		// to char, so it can be displayed
+		for (int i = 0; i < pixelArray.length; i += SKIPPIXEL) {
 			System.out.print((char) (pixelArray[i].getRed()));
 		}
 	}
 	
 	public static void main(String[] args) {
-		//FileChooser.setMediaPath("C:\\GitHub\\Java_Core\\Media Computation book source\\mediasources-no-movies-7-30-06\\intro-prog-java\\mediasources\\");
+		FileChooser.setMediaPath("//Users//superlamer//GitHub//Java_Core//Media Computation book source//mediasources-no-movies-7-30-06//intro-prog-java//mediasources//");
 		
 		Steganographer sten = 
 				new Steganographer();
@@ -100,11 +93,12 @@ public class Steganographer {
 		Picture butterfly = 
 				new Picture(FileChooser.getMediaPath("butterfly1.jpg"));
 		
-		// sten.encode(FileChooser.getMediaPath("parasites.txt"), butterfly, FileChooser.getMediaPath("encoded-butterfly1"));
-
-		 Picture pic = new Picture(FileChooser.getMediaPath("encoded-butterfly1.png"));
-		 sten.decode(pic);
-		 // pic.explore();
+		sten.encode(FileChooser.getMediaPath("parasites.txt"), butterfly, FileChooser.getMediaPath("encoded-butterfly1"));
+		Picture pic = new Picture(FileChooser.getMediaPath("encoded-butterfly1.png"));
+		
+		pic.explore();
+		sten.decode(pic);
+		 
 	}
 
 }
