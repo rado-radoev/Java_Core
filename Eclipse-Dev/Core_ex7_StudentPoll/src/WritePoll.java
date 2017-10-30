@@ -1,4 +1,9 @@
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.Scanner;
@@ -9,10 +14,12 @@ import java.util.NoSuchElementException;
 public class WritePoll {
 
 	private Formatter output;
+	private String file = "numbers.txt";
 	
 	public static void main(String[] args) {
 		
 		WritePoll wp = new WritePoll();
+		wp.greetingMessage();
 		wp.openFile();
 		wp.userPrompt();
 		wp.closeFile();
@@ -20,8 +27,18 @@ public class WritePoll {
 	
 	public void openFile() {
 		
+		Path path = Paths.get(file);
+		
+		if (!Files.exists(path)) {
+			try {
+				Files.createFile(path);
+			} catch (IOException io) {
+				System.out.println("Cannot create file.");
+			}
+		}
+		
 		try {
-			output = new Formatter("numbers.txt"); 
+			output = new Formatter(file); 
 		} catch (SecurityException se) {
 			displayMessage("Cannot write to file. Terminating ...");
 			displayMessage(se.getMessage());
@@ -59,7 +76,6 @@ public class WritePoll {
 					System.out.printf("%s %d %s", "student", student, "vote: ");				
 					input = scanner.nextInt();
 				}
-				
 
 				output.format("%d%n", input);
 				
@@ -105,21 +121,28 @@ public class WritePoll {
 	
 	
 	/**
-	 * Greeting message, that explains what the user should do
+	 * Method to display greeting message, that explains what the user should do
 	 */
-	private void greetingMessage() {
-		String message = String.format("%s %d %s %d %s", 
-				"Please, rate the food in the student cafeteria, with",
-				1,
-				"being \"awfulu\" and",
-				5,
-				"being \"excellent\"");
+	private void greetingMessage(String...message) {
+		if (message.length > 0) {
+			displayMessage(message[0]);
+		}
+		else {
+			greetingMessage(
+					String.format("%s %d %s %d %s", 
+					"Please, rate the food in the student cafeteria, with",
+					1,
+					"being \"awful\" and",
+					5,
+					"being \"excellent\""));
+		}
 		
-		displayMessage(message);
+		
+		
 	}
 	
 	/**
-	 * Generig method to display a message on the screen
+	 * Method to display a message on the screen
 	 * @param message the message do be displayed
 	 */
 	private void displayMessage(String message) {
