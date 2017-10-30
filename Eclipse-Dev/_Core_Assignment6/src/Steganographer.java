@@ -85,7 +85,6 @@ public class Steganographer {
 	}
 	
 	public static void main(String[] args) {
-		FileChooser.setMediaPath("//Users//superlamer//GitHub//Java_Core//Media Computation book source//mediasources-no-movies-7-30-06//intro-prog-java//mediasources//");
 		
 		Steganographer sten = 
 				new Steganographer();
