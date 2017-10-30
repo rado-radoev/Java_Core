@@ -25,9 +25,17 @@ public class WritePoll {
 		wp.closeFile();
 	}
 	
+	public String getFile() {
+		return file;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
 	public void openFile() {
 		
-		Path path = Paths.get(file);
+		Path path = Paths.get(getFile());
 		
 		if (!Files.exists(path)) {
 			try {
@@ -38,7 +46,7 @@ public class WritePoll {
 		}
 		
 		try {
-			output = new Formatter(file); 
+			output = new Formatter(getFile()); 
 		} catch (SecurityException se) {
 			displayMessage("Cannot write to file. Terminating ...");
 			displayMessage(se.getMessage());
