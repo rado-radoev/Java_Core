@@ -11,11 +11,18 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 
+/**
+ * Class that will write user entered data into a file
+ * @author Radoslav Radoev
+ */
 public class WritePoll {
 
 	private Formatter output;
+	
+	// file name, by default it is named numbers.txt
 	private String file = "numbers.txt";
 	
+	// main applicaion execution
 	public static void main(String[] args) {
 		
 		WritePoll wp = new WritePoll();
@@ -25,18 +32,25 @@ public class WritePoll {
 		wp.closeFile();
 	}
 	
+	// get file name
 	public String getFile() {
 		return file;
 	}
 
+	// set file name
 	public void setFile(String file) {
 		this.file = file;
 	}
 
-	public void openFile() {
-		
+	/**
+	 * Method to open file for writing, using Java Formatter object
+	 */
+	private void openFile() {
+		// convert the fileName string into a path 
 		Path path = Paths.get(getFile());
 		
+		// check if the file exists, and if it does not
+		// create it. Throw an excepiton if it cannot be created
 		if (!Files.exists(path)) {
 			try {
 				Files.createFile(path);
@@ -45,6 +59,8 @@ public class WritePoll {
 			}
 		}
 		
+		// Try to open the file as a formatter object
+		// If not, throw an error and exit application.
 		try {
 			output = new Formatter(getFile()); 
 		} catch (SecurityException se) {
@@ -65,13 +81,15 @@ public class WritePoll {
 		// open scanner object for user response
 		Scanner scanner = new Scanner(System.in);
 		
+		// input control variable
 		int input = 0;
 		
-		// Initialize the student var, up to 20
+		// Students (1-20)
 		int student = 1;
 
 		displayMessage("Enter rating (1-5). Press CTRL-D or CTRL-C to end input");
-		// start asking for the answer
+		
+		// start asking for input
 		// ask for 20 entries or until EOF (CTRL-D/CTRL-C) is entered
 		do {
 			try {
@@ -79,14 +97,17 @@ public class WritePoll {
 				System.out.printf("%s %d %s", "student", student, "vote: ");
 				input = scanner.nextInt();
 				
+				// keep asking for the same input, if wrong number is entered
 				while (!verifyInput(input)) {
 					displayMessage("Rating out of range. Please, choose between (1-5)");
 					System.out.printf("%s %d %s", "student", student, "vote: ");				
 					input = scanner.nextInt();
 				}
 
+				// if input is valid, output to text file
 				output.format("%d%n", input);
 				
+			// exceptions that can be thrown
 			} catch (InputMismatchException im) {
 				displayMessage("Wrong input type");
 				break;
@@ -97,9 +118,10 @@ public class WritePoll {
 				displayMessage("Scanner is closed.");
 				break;
 			}
+			// move to next student
 			student++;
 			
-		} while (student <= 20);
+		} while (student <= 20); // loop until students number reached 20
 		
 		// close the scanner
 		scanner.close();
@@ -129,7 +151,7 @@ public class WritePoll {
 	
 	
 	/**
-	 * Method to display greeting message, that explains what the user should do
+	 * Method to display instructions message, that explains to the user how to use the program
 	 */
 	private void greetingMessage(String...message) {
 		if (message.length > 0) {
@@ -144,8 +166,6 @@ public class WritePoll {
 					5,
 					"being \"excellent\""));
 		}
-		
-		
 		
 	}
 	
