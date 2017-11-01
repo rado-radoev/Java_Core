@@ -4,43 +4,49 @@ import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+
 
 
 public class ControlFrame extends JFrame
 { 
   private JPanel mainPanel;
   private final JPanel calcPanel;
-  private DrawImageControlPanel imageControlPanel;  // *** modified code
+  private final JPanel soundPanel;
+  private DrawImageControlPanel imagePanel;  // *** modified code
   private JSlider widthJSlider;
   private JTextField xValTextField;
   private JTextField yValTextField;
+  private JLabel soundLabel;
   private JLabel calcJLabel;
   private JButton calcJButton;
+  private JButton soundButton;
+  private JTextArea soundTextArea;
+  private JScrollBar soundScrollBar;
   
   private String xStr;
   private String yStr;
   
-  private Picture pic;
   private String picName;
+  
+  private String soundName;
+  private Sound sound;
   
   public ControlFrame(String title)
   {
@@ -51,9 +57,17 @@ public class ControlFrame extends JFrame
     calcPanel = new JPanel( new FlowLayout() );    
     calcPanel.setSize(200, 200); 
     
-    imageControlPanel = new DrawImageControlPanel();// *** modified code
-    imageControlPanel.setSize(200, 200);// *** modified code
+    imagePanel = new DrawImageControlPanel();// *** modified code
+    imagePanel.setLayout(new BorderLayout());
+    imagePanel.setSize(200, 200);// *** modified code
 
+    
+    
+    soundPanel = new JPanel( new FlowLayout());
+    soundPanel.setSize(200, 200);
+    
+    
+    
     final DrawControlPanel drawPanel = new DrawControlPanel();
     drawPanel.setSize(200, 200);    
     
@@ -92,6 +106,16 @@ public class ControlFrame extends JFrame
     
     JMenuItem showPicture = new JMenuItem("Show Picture");// *** modified code
     showPicture.setMnemonic( 'S' );// *** modified code
+    
+    
+    
+    JMenu soundMenu = new JMenu("Sound");
+    soundMenu.setMnemonic('o');
+    
+    JMenuItem loadSoundItem = new JMenuItem("Load Sound");
+    loadSoundItem.setMnemonic('d');
+    
+   
     
     
     
@@ -164,7 +188,7 @@ public class ControlFrame extends JFrame
           bar.remove(imageMenu);
           mainPanel.remove( drawPanel );
           mainPanel.remove( widthJSlider );
-          mainPanel.remove(imageControlPanel);
+          mainPanel.remove(imagePanel);
           xValTextField.setText("");
           yValTextField.setText("");
           calcJLabel.setText( "" );
@@ -186,7 +210,7 @@ public class ControlFrame extends JFrame
           bar.add( colorMenu );    
           bar.remove(imageMenu);
           mainPanel.remove( calcPanel );
-          mainPanel.remove(imageControlPanel);
+          mainPanel.remove(imagePanel);
           drawPanel.setBackground( Color.WHITE );
           mainPanel.add( drawPanel, BorderLayout.CENTER );
           mainPanel.add( widthJSlider, BorderLayout.SOUTH );          
@@ -196,32 +220,144 @@ public class ControlFrame extends JFrame
       }
     );
     
-
-    fileMenu.add(showPicture);// *** modified code
-    showPicture.addActionListener(
+    fileMenu.add(loadSoundItem);
+    loadSoundItem.addActionListener(
     		new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					bar.add( imageMenu );
-					bar.remove( colorMenu );
+					bar.remove(imageMenu);
+					bar.remove(colorMenu);
+
+					mainPanel.remove(drawPanel);
+					mainPanel.remove(calcPanel);
+					mainPanel.remove(widthJSlider);
+					mainPanel.remove(imagePanel);
 					
-					mainPanel.remove( drawPanel );
-					mainPanel.remove( calcPanel );
-			        mainPanel.remove( widthJSlider );
+					bar.add(soundMenu);
+					soundName = FileChooser.pickAFile();
+					sound = new Sound(soundName);
+															
+					mainPanel.add(soundPanel);
 					
-			        picName = FileChooser.pickAFile();
-					//String fileName = FileChooser.pickAFile();
-					if (picName != null) {
-						//pic = new Picture(picName);
-						imageControlPanel.setFileName(picName);
-						imageControlPanel.setPicture(picName);
-						mainPanel.add(imageControlPanel, BorderLayout.CENTER);
-						validate();
-						repaint();						
-					}
+					validate();
+					repaint();
 				}
 			});
+    
+  
+    JMenuItem playSoundItem = new JMenuItem("Play sound");
+    playSoundItem.setMnemonic('l');
+    soundMenu.add(playSoundItem);
+    playSoundItem.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					sound.play();
+				}
+			});
+    
+    
+    JMenuItem mirrorSoundItem = new JMenuItem("Mirror sound");
+    mirrorSoundItem.setMnemonic('m');
+    soundMenu.add(mirrorSoundItem);
+    mirrorSoundItem.addActionListener( 
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					sound.mirrorFrontToBack();
+					sound.play();
+				}
+			});
+   
+    soundButton = new JButton("Play");
+    soundLabel = new JLabel();
+   
+    JMenuItem revertSoundItem = new JMenuItem("Revert sound");
+    revertSoundItem.setMnemonic('v');
+    soundMenu.add(revertSoundItem);
+    revertSoundItem.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					soundPanel.add(soundLabel);
+				    soundPanel.add(soundButton);
+
+					sound = new Sound(soundName);
+					soundLabel.setText("Sound name: " + soundName.substring(soundName.lastIndexOf(File.separator) + 1, soundName.length() - 4));
+					
+					validate();
+					repaint();
+				}
+			});
+    
+    soundScrollBar = new JScrollBar(SwingConstants.VERTICAL);
+    
+    soundTextArea = new JTextArea();
+    soundTextArea.setVisible(true);
+    soundTextArea.setEditable(false);
+    soundTextArea.add(soundScrollBar);
+    
+  
+    
+    JMenuItem soundDisplayItem = new JMenuItem("Display Sound");
+    soundDisplayItem.setMnemonic('D');
+    soundMenu.add(soundDisplayItem);
+    soundDisplayItem.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String soundText = sound.toString();
+					soundTextArea.setText(soundText);
+					
+					mainPanel.add(soundTextArea);
+					
+					validate();
+					repaint();
+				}
+			});
+  
+        
+    soundButton.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {		    
+					Sound s = new Sound(soundName);
+					s.play();
+					
+					validate();
+					repaint();
+				}
+			});
+    
+    
+		fileMenu.add(showPicture);// *** modified code
+		showPicture.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				bar.add(imageMenu);
+				bar.remove(colorMenu);
+
+				mainPanel.remove(drawPanel);
+				mainPanel.remove(calcPanel);
+				mainPanel.remove(widthJSlider);
+
+				picName = FileChooser.pickAFile();
+				if (picName != null) {
+					imagePanel.setFileName(picName);
+					imagePanel.setPicture(picName);
+					mainPanel.add(imagePanel, BorderLayout.CENTER);
+					validate();
+					repaint();
+				}
+			}
+		});
     
     JMenuItem revertItem = new JMenuItem("Revert");
     revertItem.setMnemonic('R');
@@ -231,7 +367,7 @@ public class ControlFrame extends JFrame
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			imageControlPanel.setPicture(picName);
+			imagePanel.setPicture(picName);
 			validate();
 			repaint();
 		}
@@ -245,7 +381,7 @@ public class ControlFrame extends JFrame
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			imageControlPanel.grayscale();
+			imagePanel.grayscale();
 			validate();
 			repaint();
 		}
@@ -259,7 +395,7 @@ public class ControlFrame extends JFrame
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			imageControlPanel.sepia();
+			imagePanel.sepia();
 			validate();
 			repaint();
 		}
@@ -273,7 +409,7 @@ public class ControlFrame extends JFrame
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					imageControlPanel.negate();
+					imagePanel.negate();
 					validate();
 					repaint();
 				}
