@@ -14,6 +14,7 @@ import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.BorderLayout;
@@ -28,7 +29,7 @@ public class ControlFrame extends JFrame
 { 
   private JPanel mainPanel;
   private final JPanel calcPanel;
-  private final DrawImageControlPanel imageControlPanel;  // *** modified code
+  private DrawImageControlPanel imageControlPanel;  // *** modified code
   private JSlider widthJSlider;
   private JTextField xValTextField;
   private JTextField yValTextField;
@@ -37,6 +38,9 @@ public class ControlFrame extends JFrame
   
   private String xStr;
   private String yStr;
+  
+  private Picture pic;
+  private String picName;
   
   public ControlFrame(String title)
   {
@@ -48,7 +52,7 @@ public class ControlFrame extends JFrame
     calcPanel.setSize(200, 200); 
     
     imageControlPanel = new DrawImageControlPanel();// *** modified code
-    imageControlPanel.setSize(this.getWidth() - 10, this.getHeight() - 10);// *** modified code
+    imageControlPanel.setSize(200, 200);// *** modified code
 
     final DrawControlPanel drawPanel = new DrawControlPanel();
     drawPanel.setSize(200, 200);    
@@ -59,67 +63,6 @@ public class ControlFrame extends JFrame
     
     JMenu fileMenu = new JMenu( "File" );
     fileMenu.setMnemonic( 'F' );
-    
-    JMenuItem showPicture = new JMenuItem("Show Picture");// *** modified code
-    showPicture.setMnemonic( 'S' );// *** modified code
-    fileMenu.add(showPicture);// *** modified code
-    showPicture.addActionListener(
-    		new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-				    mainPanel.remove(imageControlPanel);
-					mainPanel.remove( drawPanel );
-			        mainPanel.remove( widthJSlider );  
-					
-			        Picture pic = new Picture(FileChooser.pickAFile());
-					imageControlPanel.setPicture(pic);
-			        
-			        
-			        JMenu image = new JMenu("Image");
-			        JMenuItem posterize = new JMenuItem("Posterize");
-			        image.add(posterize);
-			        bar.add(image);
-					posterize.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							pic.posterize(1);
-							repaint();
-						}
-					});
-					
-			        JMenuItem grayScale = new JMenuItem("Gray Scale");
-			        image.add(grayScale);
-			        bar.add(image);
-					posterize.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							pic.grayscale();
-							repaint();
-						}
-					});
-					
-					
-			        JMenuItem sepia = new JMenuItem("Sepia");
-			        image.add(sepia);
-			        bar.add(image);
-					posterize.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							pic.sepiaTint();
-							repaint();
-						}
-					});
-					
-									
-					mainPanel.add( imageControlPanel, BorderLayout.CENTER );
-			        validate();
-			        repaint();
-				}
-			});
     
     
     JMenuItem aboutItem = new JMenuItem( "About..." );
@@ -140,6 +83,19 @@ public class ControlFrame extends JFrame
     
     setJMenuBar( bar );  // Attach the JMenuBar to the ControlFrame.
     bar.add( fileMenu );  // Add the file menu to the JMenuBar.
+    
+    
+    
+    
+    JMenu imageMenu = new JMenu("Image");
+    imageMenu.setMnemonic('S');
+    
+    JMenuItem showPicture = new JMenuItem("Show Picture");// *** modified code
+    showPicture.setMnemonic( 'S' );// *** modified code
+    
+    
+    
+    
   
     final JMenu colorMenu = new JMenu( "Color" );
     colorMenu.setMnemonic( 'C' );
@@ -205,8 +161,10 @@ public class ControlFrame extends JFrame
         public void actionPerformed( ActionEvent event )
         {
           bar.remove( colorMenu );
+          bar.remove(imageMenu);
           mainPanel.remove( drawPanel );
           mainPanel.remove( widthJSlider );
+          mainPanel.remove(imageControlPanel);
           xValTextField.setText("");
           yValTextField.setText("");
           calcJLabel.setText( "" );
@@ -225,8 +183,10 @@ public class ControlFrame extends JFrame
       {
         public void actionPerformed( ActionEvent event )
         {
-          bar.add( colorMenu );         
+          bar.add( colorMenu );    
+          bar.remove(imageMenu);
           mainPanel.remove( calcPanel );
+          mainPanel.remove(imageControlPanel);
           drawPanel.setBackground( Color.WHITE );
           mainPanel.add( drawPanel, BorderLayout.CENTER );
           mainPanel.add( widthJSlider, BorderLayout.SOUTH );          
@@ -235,6 +195,89 @@ public class ControlFrame extends JFrame
         }
       }
     );
+    
+
+    fileMenu.add(showPicture);// *** modified code
+    showPicture.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					bar.add( imageMenu );
+					bar.remove( colorMenu );
+					
+					mainPanel.remove( drawPanel );
+					mainPanel.remove( calcPanel );
+			        mainPanel.remove( widthJSlider );
+					
+			        picName = FileChooser.pickAFile();
+					//String fileName = FileChooser.pickAFile();
+					if (picName != null) {
+						//pic = new Picture(picName);
+						imageControlPanel.setFileName(picName);
+						imageControlPanel.setPicture(picName);
+						mainPanel.add(imageControlPanel, BorderLayout.CENTER);
+						validate();
+						repaint();						
+					}
+				}
+			});
+    
+    JMenuItem revertItem = new JMenuItem("Revert");
+    revertItem.setMnemonic('R');
+    imageMenu.add(revertItem);
+    revertItem.addActionListener(
+    		new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			imageControlPanel.setPicture(picName);
+			validate();
+			repaint();
+		}
+	});
+    
+    JMenuItem grayScaleItem = new JMenuItem("Grayscale");
+    grayScaleItem.setMnemonic('G');
+    imageMenu.add(grayScaleItem);
+    grayScaleItem.addActionListener(
+    		new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			imageControlPanel.grayscale();
+			validate();
+			repaint();
+		}
+	});
+    
+    JMenuItem sepiaItem = new JMenuItem("Sepia");
+    sepiaItem.setMnemonic('P');
+    imageMenu.add(sepiaItem);
+    sepiaItem.addActionListener(
+    		new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			imageControlPanel.sepia();
+			validate();
+			repaint();
+		}
+	});
+    
+    JMenuItem negateItem = new JMenuItem("Negate");
+    negateItem.setMnemonic('N');
+    imageMenu.add(negateItem);
+    negateItem.addActionListener(
+    		new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					imageControlPanel.negate();
+					validate();
+					repaint();
+				}
+			});
      
     JMenuItem exitItem = new JMenuItem( "Exit" );
     exitItem.setMnemonic( 'x' );

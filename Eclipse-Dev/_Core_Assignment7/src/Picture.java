@@ -150,44 +150,28 @@ public class Picture extends SimplePicture
   }
   
   /**
-   * Method to posterize (reduce the number of colors) in the picture
-   * @param numLevels the number of color levels to use
+   * Method to negate the picture
    */
-  public void posterize(int numLevels) {
+  public void negate() {
+	  Pixel[] pixelArray = getPixels();
 	  Pixel pixel;
-	  int redValue = 0, greenValue = 0, blueValue = 0;
-	  int increment = (int) (256.0 / numLevels);
-	  int bottomValue, topValue, middleValue = 0;
+	  int redValue, greenValue, blueValue = 0;
 	  
-	  // loop through the pixels
-	  for (int x = 0; x < getWidth(); x++) {
-		  for (int y = 0; y < getHeight(); y++) {
-			  // get the current pixel and colors
-			  pixel = getPixel(x, y);
-			  redValue = pixel.getRed();
-			  greenValue = pixel.getGreen();
-			  blueValue = pixel.getBlue();
-			  
-			  // loop through the number of levels
-			  for (int i = 0; i < numLevels; i++) {
-				  // compute the bottom, top, middle values 
-				  bottomValue = i * increment;
-				  topValue = (i + 1) * increment;
-				  middleValue = (int) ((bottomValue + topValue - 1) / 2.0);
-			  
-				  // check if current values are in current range and if so set them to the middle value
-				  if (bottomValue <= redValue &&
-						  redValue < topValue)
-					  pixel.setRed(middleValue);
-				  if (bottomValue <= greenValue &&
-						  greenValue < topValue)
-					  pixel.setGreen(middleValue);
-				  if (bottomValue <= blueValue &&
-						  blueValue < topValue)
-					  pixel.setBlue(middleValue);
-			  
-			  }
-		  }
+	  // loop through all the pixels
+	  for (int i = 0; i < pixelArray.length; i++) {
+		  
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the current red, green, blue value
+		  redValue = pixel.getRed();
+		  greenValue = pixel.getGreen();
+		  blueValue = pixel.getBlue();
+		  
+		  // set the pixel's color to the new color
+		  pixel.setColor(new Color(255 - redValue, 
+	  							   255 - greenValue,
+	  							   255 - blueValue));
 	  }
   }
   
