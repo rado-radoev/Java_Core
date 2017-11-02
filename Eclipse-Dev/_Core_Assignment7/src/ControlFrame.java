@@ -22,8 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
-
-
 public class ControlFrame extends JFrame
 { 
   private JPanel mainPanel;
@@ -56,24 +54,28 @@ public class ControlFrame extends JFrame
     
     calcPanel = new JPanel( new FlowLayout() );    
     calcPanel.setSize(200, 200); 
-    
-    imagePanel = new DrawImageControlPanel();// *** modified code
-    imagePanel.setLayout(new BorderLayout());
-    imagePanel.setSize(200, 200);// *** modified code
 
     
-    
+    // create imagePanel
+    imagePanel = new DrawImageControlPanel();
+    // set imagePanel layout to BorderLayout
+    imagePanel.setLayout(new BorderLayout());
+    // set imagePanel size
+    imagePanel.setSize(200, 200);
+
+    // create soundPanel and set layout to FlowLayout
     soundPanel = new JPanel( new FlowLayout());
+    // set soundPanel size
     soundPanel.setSize(200, 200);
-    
-    
+     
+   
     
     final DrawControlPanel drawPanel = new DrawControlPanel();
     drawPanel.setSize(200, 200);    
     
     this.setContentPane( mainPanel );
     
-    final JMenuBar bar = new JMenuBar();  // Create a JMenuBar so we can attach menus to it.// *** modified code
+    final JMenuBar bar = new JMenuBar();  // Create a JMenuBar so we can attach menus to it.
     
     JMenu fileMenu = new JMenu( "File" );
     fileMenu.setMnemonic( 'F' );
@@ -100,27 +102,24 @@ public class ControlFrame extends JFrame
     
     
     
-    
+    // create image menu and set mnemonic   
     JMenu imageMenu = new JMenu("Image");
     imageMenu.setMnemonic('S');
     
-    JMenuItem showPicture = new JMenuItem("Show Picture");// *** modified code
+    // create show picture item (submenu) that will appear under File Menu
+    JMenuItem showPicture = new JMenuItem("Show Picture");
     showPicture.setMnemonic( 'S' );// *** modified code
     
-    
-    
+    // create sound Menu and set mnemonic
     JMenu soundMenu = new JMenu("Sound");
     soundMenu.setMnemonic('o');
     
+    // create load sound item (submenu) that will appear under File Menu
     JMenuItem loadSoundItem = new JMenuItem("Load Sound");
     loadSoundItem.setMnemonic('d');
     
-   
-    
-    
-    
-    
   
+    
     final JMenu colorMenu = new JMenu( "Color" );
     colorMenu.setMnemonic( 'C' );
     
@@ -220,135 +219,211 @@ public class ControlFrame extends JFrame
       }
     );
     
+    
+    
+    //================================================================================
+    // SOUND MENU START
+    //================================================================================
+    
+    // add loadSoundItem submenu to File Menu
     fileMenu.add(loadSoundItem);
+    // add action listener to loadSoundItem
     loadSoundItem.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning of anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					bar.remove(imageMenu);
-					bar.remove(colorMenu);
+					// remove menus from previous methods in case they are shown
+					bar.remove( imageMenu );
+					bar.remove( colorMenu );
 
-					mainPanel.remove(drawPanel);
-					mainPanel.remove(calcPanel);
-					mainPanel.remove(widthJSlider);
-					mainPanel.remove(imagePanel);
+					// remove old panel, so no stale panels appear when the menu is clicked
+					mainPanel.remove( drawPanel );
+					mainPanel.remove( calcPanel );
+					mainPanel.remove( widthJSlider );
+					mainPanel.remove( imagePanel );
 					
+					// add the sound Menu to the Menu bar
 					bar.add(soundMenu);
+					// allow the user to select the file to open
 					soundName = FileChooser.pickAFile();
+					// assign the chosen sound to the sound variable
 					sound = new Sound(soundName);
 															
+					// add the soudPanel, which in this case is empty panel
 					mainPanel.add(soundPanel);
 					
+					// validate it and repaint it so if anything else was painted on the panel
+					// it is not repainted.
 					validate();
 					repaint();
 				}
-			});
+			} // End of anonymous inner class
+    		);
     
   
+    // create sumbenu to play a sound
     JMenuItem playSoundItem = new JMenuItem("Play sound");
+    // setting playSound menu mnemonic
     playSoundItem.setMnemonic('l');
+    // add play sound submenu to the Sound Menu
     soundMenu.add(playSoundItem);
+    // set the action to perform when menu is clicked on
     playSoundItem.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// play the sound
 					sound.play();
 				}
-			});
+			} // End anonymous inner class
+    		);
     
-    
+    // create submenu to mirror a sound
     JMenuItem mirrorSoundItem = new JMenuItem("Mirror sound");
+    // setting mirrorSound menu mnemonic
     mirrorSoundItem.setMnemonic('m');
+    // add mirrorSound submenu to Sound Menu
     soundMenu.add(mirrorSoundItem);
+    // set the action to perform when menu is clicked on
     mirrorSoundItem.addActionListener( 
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// mirror the sound
 					sound.mirrorFrontToBack();
+					// now play it
 					sound.play();
 				}
-			});
+			} // End anonymous inner class
+    		);
    
+    // createing a play button and a label to display the sound name
     soundButton = new JButton("Play");
     soundLabel = new JLabel();
    
+    // create submenu to revert the sound back to its original state
     JMenuItem revertSoundItem = new JMenuItem("Revert sound");
+    // set the revertSound submenu mnemonic
     revertSoundItem.setMnemonic('v');
+    // add the revertSound submenu to the Sound Menu
     soundMenu.add(revertSoundItem);
+    // set the action to perform when the menu is clicked
     revertSoundItem.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					soundPanel.add(soundLabel);
-				    soundPanel.add(soundButton);
+					// add the soundlabel and button to the soundPanel
+					// soundButton actionListener implementation to follow
+					soundPanel.add( soundLabel );
+				    soundPanel.add( soundButton );
 
+				    // rewrite the sound object
 					sound = new Sound(soundName);
+					// set the sound label to the sound name
 					soundLabel.setText("Sound name: " + soundName.substring(soundName.lastIndexOf(File.separator) + 1, soundName.length() - 4));
 					
+					// repaint the JPanel (soundPanel) so the new sound name is displyed
 					validate();
 					repaint();
 				}
-			});
+			} // End anonymous inner class
+    		);
     
+    // add scroll bar, not that we actually need it for this, but ...
     soundScrollBar = new JScrollBar(SwingConstants.VERTICAL);
     
+    // create a sound text area that will display information about the sound
+    // set properties of the textArea, so it is visible, has a transparent background and 
+    // cannot be edited. Also add a scroll bar to it.
     soundTextArea = new JTextArea();
     soundTextArea.setVisible(true);
     soundTextArea.setEditable(false);
+    soundTextArea.setOpaque(false);
     soundTextArea.add(soundScrollBar);
     
-  
-    
+    // create sumbemu soundDisplay that will display information about the sound
     JMenuItem soundDisplayItem = new JMenuItem("Display Sound");
+    // set soundDisplay submenu mnemonic
     soundDisplayItem.setMnemonic('D');
+    // add the displaySound submenu to the Sound Menu
     soundMenu.add(soundDisplayItem);
+    // setting the action to peform when the menu is clicked
     soundDisplayItem.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// clean up the JPanel if sound has been reverted before that
+					mainPanel.remove( soundPanel );
+					
+					// get the sound toString representation and display it in the textAre
 					String soundText = sound.toString();
 					soundTextArea.setText(soundText);
 					
-					mainPanel.add(soundTextArea);
+					// add the information to the JPanel and Left align it
+					mainPanel.add(soundTextArea, FlowLayout.LEFT);
 					
+					// reapint the JPanel with the new information
 					validate();
 					repaint();
 				}
-			});
+			} // End anonymous inner class
+    		);
   
-        
+    // set action to perform when the sound button is pressed     
     soundButton.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {		    
+					// create new sound object, using the name that was already selected
+					// when the user clicked on the load sound menu
 					Sound s = new Sound(soundName);
+					// play that funky music 
 					s.play();
 					
 					validate();
 					repaint();
 				}
-			});
+			} // End anonymous inner class
+    		);
+    
+    //================================================================================
+    // SOUND MENU END
+    //================================================================================ 
     
     
-		fileMenu.add(showPicture);// *** modified code
-		showPicture.addActionListener(new ActionListener() {
+    
+    //================================================================================
+    // IMAGE MENU START
+    //================================================================================
+    
+    	// add showPicture submenu to File Menu	
+	fileMenu.add(showPicture);
+	// setting the action to perform when selecting the menu
+	showPicture.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				bar.add(imageMenu);
-				bar.remove(colorMenu);
+			public void actionPerformed(ActionEvent e) { // Beginning anonymous inner class
+				// clear all other menues, except File Menu
+				bar.add( imageMenu );
+				bar.remove( colorMenu );
 
-				mainPanel.remove(drawPanel);
-				mainPanel.remove(calcPanel);
-				mainPanel.remove(widthJSlider);
+				// clear out the JPanel from any other methods
+				mainPanel.remove( drawPanel );
+				mainPanel.remove( calcPanel );
+				mainPanel.remove( widthJSlider );
 
+				// allow the user to select the image to display
 				picName = FileChooser.pickAFile();
+				// before displaying the image check if the cancel is not clicked
+				// in which case the picName variable will be null
+				// if image is selected, invoke the imagePanel JPanel methods
+				// and add it to the main panel, then repaint
 				if (picName != null) {
 					imagePanel.setFileName(picName);
 					imagePanel.setPicture(picName);
@@ -357,63 +432,105 @@ public class ControlFrame extends JFrame
 					repaint();
 				}
 			}
-		});
+		} // End anonymous inner class
+	);
     
+	// create revert submenu
     JMenuItem revertItem = new JMenuItem("Revert");
+    // set the mnemonic for the revert submenu
     revertItem.setMnemonic('R');
+    // add the revert submenu to the Image Menu
     imageMenu.add(revertItem);
+    // setting actions to perform when the menu is selected
     revertItem.addActionListener(
-    		new ActionListener() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			imagePanel.setPicture(picName);
-			validate();
-			repaint();
-		}
-	});
+	    		new ActionListener() { // Beginning anonymous inner class
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// reset the picture of the imagePanel to the original 
+				// then repaint the JPanel
+				imagePanel.setPicture(picName);
+				validate();
+				repaint();
+			}
+		} // End anonymous inner class
+	);
     
+    // create grayscale submenu
     JMenuItem grayScaleItem = new JMenuItem("Grayscale");
+    // set menu mnemonic
     grayScaleItem.setMnemonic('G');
+    // add grayscale submentu to the Image menu
     imageMenu.add(grayScaleItem);
+    // setting actions to perform when menu is selected
     grayScaleItem.addActionListener(
-    		new ActionListener() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			imagePanel.grayscale();
-			validate();
-			repaint();
-		}
-	});
+	    		new ActionListener() { // Beginning anonymous inner class
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// modify the image in imagePanel
+				// it will be automatically repainted in the panel
+				// so the image will be grayscaled
+				// once the mainPanel is repainted too the newly modified image
+				// will be displayed
+				imagePanel.grayscale();
+				validate();
+				repaint();
+			}
+		} // End anonymous inner class
+	);
     
+    // create sepia submenu
     JMenuItem sepiaItem = new JMenuItem("Sepia");
+    // set sepai submenu mnemonic
     sepiaItem.setMnemonic('P');
+    // add the sepia submenu to the Image Menu
     imageMenu.add(sepiaItem);
+    // setting actions to perform when menu is selected
     sepiaItem.addActionListener(
-    		new ActionListener() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			imagePanel.sepia();
-			validate();
-			repaint();
-		}
-	});
+	    		new ActionListener() { // Beginning anonymous inner class
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// modify the image in imagePanel
+				// it will be automatically repainted in the panel
+				// so the image will have the sepia filter applied to it
+				// once the mainPanel is repainted too the newly modified image
+				// will be displayed
+				imagePanel.sepia();
+				validate();
+				repaint();
+			}
+		} // End anonymous inner class
+	);
     
+    // create negate submentu
     JMenuItem negateItem = new JMenuItem("Negate");
+    // set negate submenu mnemonic
     negateItem.setMnemonic('N');
+    // add the negate submenu to the Image Menu
     imageMenu.add(negateItem);
+    // setting actions to perform when menu is selected
     negateItem.addActionListener(
-    		new ActionListener() {
+    		new ActionListener() { // Beginning anonymous inner class
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// modify the image in imagePanel
+					// it will be automatically repainted in the panel
+					// so the image will have the negate filter applied to it
+					// once the mainPanel is repainted too the newly modified image
+					// will be displayed
 					imagePanel.negate();
 					validate();
 					repaint();
 				}
-			});
+			} // End anonymous inner class
+    		);
+    
+    //================================================================================
+    // IMAGE MENU END
+    //================================================================================
      
     JMenuItem exitItem = new JMenuItem( "Exit" );
     exitItem.setMnemonic( 'x' );
