@@ -10,8 +10,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.concurrent.SynchronousQueue;
+
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -27,6 +31,8 @@ public class ControlFrame extends JFrame
   private JPanel mainPanel;
   private final JPanel calcPanel;
   private final JPanel soundPanel;
+  private final JPanel encodePanel;
+  private final JPanel decodePanel;
   private DrawImageControlPanel imagePanel;  // *** modified code
   private JSlider widthJSlider;
   private JTextField xValTextField;
@@ -68,7 +74,14 @@ public class ControlFrame extends JFrame
     // set soundPanel size
     soundPanel.setSize(200, 200);
      
-   
+   // crate encode & decode JPanels and set their size to 200,200. 
+   // Layout will be BorderLayout
+    encodePanel = new JPanel(new BorderLayout());
+    encodePanel.setSize(200,200);
+    
+    decodePanel = new JPanel(new BorderLayout());
+    decodePanel.setSize(200, 200);
+    
     
     final DrawControlPanel drawPanel = new DrawControlPanel();
     drawPanel.setSize(200, 200);    
@@ -118,7 +131,19 @@ public class ControlFrame extends JFrame
     JMenuItem loadSoundItem = new JMenuItem("Load Sound");
     loadSoundItem.setMnemonic('d');
     
+    // create encode menu and set mnemonic
+    JMenuItem encodeMenuItem = new JMenuItem("Encode");
+    encodeMenuItem.setMnemonic('e');
+    
+    // create decode menu and set mnemonic
+    JMenuItem decodeMenuItem = new JMenuItem("Decode");
+    decodeMenuItem.setMnemonic('d');
+    
+    // create encode/decode submenut and add to file
+    JMenu encodeDecode = new JMenu("Encode/Decode");
+    encodeDecode.setMnemonic('E');
   
+    
     
     final JMenu colorMenu = new JMenu( "Color" );
     colorMenu.setMnemonic( 'C' );
@@ -136,6 +161,7 @@ public class ControlFrame extends JFrame
      }  // End of anonymous inner class
     );
     
+
     JMenuItem blueItem = new JMenuItem( "Blue" );
     colorMenu.add( blueItem );
     blueItem.addActionListener(
@@ -531,6 +557,124 @@ public class ControlFrame extends JFrame
     //================================================================================
     // IMAGE MENU END
     //================================================================================
+    
+    
+    
+    //================================================================================
+    // ENCODE/DECODE MENU START
+    //================================================================================
+    // add main menu to file menu
+    fileMenu.add(encodeDecode);
+	
+    // add both encode and decode submenus to main menu
+    encodeDecode.add(encodeMenuItem);
+	encodeDecode.add(decodeMenuItem);
+	
+	// encode the picture
+	encodeMenuItem.addActionListener(
+    		new ActionListener() { // Beginning anonymous inner class
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// remove other panels
+					mainPanel.remove( calcPanel );
+					mainPanel.remove( drawPanel );
+					mainPanel.remove( imagePanel );
+					mainPanel.remove( soundPanel );
+					mainPanel.remove( decodePanel );
+					
+					// remove other menus
+					bar.remove( soundMenu );
+					bar.remove( colorMenu );
+					bar.remove( imageMenu );
+					
+					// get a text file to encrypt
+					String sourceFileName = 
+							FileChooser.pickAFile();
+
+					// get the dir
+					// this is where the output file will be saved to
+					String dir = 
+							sourceFileName.substring(0, sourceFileName.lastIndexOf(File.separatorChar) + 1);
+
+					// get a picutre to encode to
+					Picture pictureToEncodeTo = 
+							new Picture(FileChooser.pickAFile());
+					
+					// get the target file
+					// it will be saved in the same dir as the text file
+					String targetFileName = dir; 
+					targetFileName += JOptionPane.showInputDialog("Enter file name of the output picture");
+					
+					// create a steganographer obj
+					Steganographer sten = 
+							new Steganographer();
+
+					// encrypt the text into the picture
+					sten.encode(sourceFileName, pictureToEncodeTo, targetFileName);
+
+					// display a text with the path to the encrypted image
+					JTextArea text = new JTextArea("Encoded to: " + targetFileName + ".png", 1, mainPanel.getWidth() - 1);
+					text.setWrapStyleWord(true);
+					text.setLineWrap(true);
+					text.setOpaque(false);
+					text.setEditable(false);
+					encodePanel.add(text);
+					mainPanel.add(encodePanel, BorderLayout.CENTER);
+					validate();
+					repaint();
+				}
+			} // End anonymous inner class
+    		);
+    
+    decodeMenuItem.addActionListener(
+    		new ActionListener() { // Beginning anonymous inner class
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// remove other panels
+					mainPanel.remove( calcPanel );
+					mainPanel.remove( drawPanel );
+					mainPanel.remove( imagePanel );
+					mainPanel.remove( soundPanel );
+					mainPanel.remove( encodePanel );
+					
+					// remove other menus
+					bar.remove( soundMenu );
+					bar.remove( colorMenu );
+					bar.remove( imageMenu );
+					
+					// get the picture to be decrypted
+					Picture picture = new Picture(FileChooser.pickAFile());
+					
+					// create a steganographer obj
+					Steganographer sten = 
+							new Steganographer();
+					
+					// decrypt the image 
+					String decodedString = sten.decode(picture);
+					
+					// display the decrypted text
+					// add scrollbar if needed
+					JScrollPane scrollBar;
+					JTextArea decodedText = new JTextArea(decodedString, 10, 20);
+					decodedText.setWrapStyleWord(true);
+					decodedText.setLineWrap(true);
+					decodedText.setOpaque(false);
+					decodedText.setEditable(false);
+					scrollBar = new JScrollPane(decodedText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					
+					decodePanel.add(scrollBar);
+					mainPanel.add(decodePanel, BorderLayout.CENTER);
+					validate();
+					repaint();
+				}
+			} // End anonymous inner class
+    		);
+    
+    //================================================================================
+    // ENCODE/DECODE MENU END
+    //================================================================================
      
     JMenuItem exitItem = new JMenuItem( "Exit" );
     exitItem.setMnemonic( 'x' );
@@ -617,3 +761,4 @@ public class ControlFrame extends JFrame
     validate();
   }
 }  
+
