@@ -1,11 +1,12 @@
 import java.security.SecureRandom;
 
-import javax.net.ssl.SSLEngineResult.Status;
 
 public class Craps {
 	
 	private Status gameStatus; // Can contain CONTINUE, WON, LOST
 	private int myPoint, sumOfDice, die1, die2, sum;
+	
+	StringBuffer log;
 	
 	// Create secure random number generator for use in method rolldice
 	private static final SecureRandom randomNumbers = new SecureRandom();
@@ -20,6 +21,13 @@ public class Craps {
 	private static final int YO_LEVEN = 11;
     private static final int BOX_CARS = 12;
     
+    /**
+     * @return log
+     */
+    public String getLog() {
+    		return log.toString();
+    }
+       
     /**
 	 * @return the gameStatus
 	 */
@@ -63,6 +71,13 @@ public class Craps {
 	}
 
 	/**
+	 * @param message the message to append to log
+	 */
+	private void setLog(String message) {
+		this.log.append(message);
+	}
+	
+	/**
 	 * @param gameStatus the gameStatus to set
 	 */
 	private void setGameStatus(Status gameStatus) {
@@ -105,14 +120,17 @@ public class Craps {
 	}
 
 	// Play the game of craps
-	public String play() {
+	public void play() {
 	
+		log = new StringBuffer();
+		
 		setSumOfDice(rollDice()); // first roll of the dice
 		
 		// Determine game status and point based on first roll
 		switch (getSumOfDice()) {
 		case SEVEN: // win with 7 on the first roll
 		case YO_LEVEN:	// win with 11 on the first roll
+			setLog(String.format("Player wins%n"));
 			setGameStatus(Status.WON);
 			break;
 		case SNAKE_EYE:	// lose with 2 on the first roll
@@ -122,6 +140,7 @@ public class Craps {
 		default:	// did not win or lose, so remember point
 			setGameStatus(Status.CONTINUE);	// game is not over
 			setMyPoint(getSumOfDice());	// remember the point
+			setLog(String.format("Point is %d%n", getMyPoint()));
 			break;
 		}
 		
@@ -130,14 +149,22 @@ public class Craps {
 			setSumOfDice(rollDice());	// roll dice again
 			
 			// determine game status
-			if (getSumOfDice() == getMyPoint()) // win by making point
-				setGameStatus(Status.WON);
+			if (getSumOfDice() == getMyPoint()) { // win by making point
+				//setLog(String.format("Player won making point%n"));
+					setGameStatus(Status.WON);
+				}
+			else 
+				if (getSumOfDice() == SEVEN)	{ // loose by rolling 7 before point
+					//setLog(String.format("Player lost rolling 7 before point%n"));
+						setGameStatus(Status.LOST);
+					}
+					
+			// log won or lost message
+			if (gameStatus == Status.WON)
+				setLog(String.format("Player wins%n"));
 			else
-				if (getSumOfDice() == SEVEN)	// loose by rolling 7 before point
-					setGameStatus(Status.LOST);
+				setLog(String.format("Player loses%n"));
 		}
-		
-		return getGameStatus().toString();
 	}
 	
 	// roll dice, calculate sum and display result
@@ -149,7 +176,7 @@ public class Craps {
 		setSum(getDie1() + getDie2()); // sum of die values
 		
 		// display results of this roll
-		//System.out.printf("Player rolled %d + %d = %d%n", die1, die2, sum);
+		log.append(String.format("Player rolled %d + %d = %d%n", die1, die2, sum));
 		
 		return getSum();
 	}
