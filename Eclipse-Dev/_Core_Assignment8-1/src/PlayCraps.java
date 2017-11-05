@@ -5,8 +5,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -57,8 +55,7 @@ public class PlayCraps extends JFrame {
 		 the button and results text
 		 and the image of rolling dice 
 		*/
-		labelAndTextPanel = new JPanel();
-		labelAndTextPanel.setLayout(new BoxLayout(labelAndTextPanel, BoxLayout.PAGE_AXIS));
+		labelAndTextPanel = new JPanel(new GridLayout(2, 1));
 		buttonAndResultsPanel = new JPanel(new FlowLayout());
 		rollingDicePanel = new JPanel(new FlowLayout());
 		
@@ -67,16 +64,10 @@ public class PlayCraps extends JFrame {
 		 each row of components is in a separate JPanel
 		 then both panels are added to one panel,
 		 which is then added to the NORTH position of the main panel
-		 The two row JPanels are set to Box Layout with a LINE_AXIS orientation (left to right)
-		 and are CENTER aligned
 		*/
-		labelAndTextPanelRow1 = new JPanel();
-		labelAndTextPanelRow1.setLayout(new BoxLayout(labelAndTextPanelRow1, BoxLayout.LINE_AXIS));
-		labelAndTextPanelRow1.setAlignmentX(CENTER_ALIGNMENT);
-		labelAndTextPanelRow2 = new JPanel();
-		labelAndTextPanelRow2.setLayout(new BoxLayout(labelAndTextPanelRow2, BoxLayout.LINE_AXIS));
-		labelAndTextPanelRow2.setAlignmentX(CENTER_ALIGNMENT);
-		
+		labelAndTextPanelRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
+		labelAndTextPanelRow2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
+
 		/* the button and the display of the results are added to to a grid layout panel
 		 the button and the results are separated in their own panels.
 		 each panel is the added to the main gridlayout buttonAndResults JPanel,
@@ -86,91 +77,40 @@ public class PlayCraps extends JFrame {
 		resultsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		
-		// ================================================================================
-		// LABELS AND TEXTFIELDS ROW 1 START
-		// ================================================================================	
-		// add some clever empty areas so the text is aligned
-		// then creating the JLabel and adding it to the JPanel
-		labelAndTextPanelRow1.add(Box.createRigidArea(new Dimension(10, 0)));
-		die1Label = new JLabel("Die One:");
+		/* 
+		 create JLabels and JTextFields and add to labelAndText JPanel
+		 text fields will be only 2 columns wide. A die only has one digit
+		 text fields will not be editable. User don't need to type anything 
+		*/
+		die1Label = new JLabel("Die One:  ");
 		labelAndTextPanelRow1.add(die1Label);
-		
-		// add space between die 1 label and die 1 text fields
-		labelAndTextPanelRow1.add(Box.createRigidArea(new Dimension(20, 0)));
 
-		// create JText field for die 1. Set it to not editable and add maximum size,
-		// otherwise it will be assigned as much space as it is available. 
-		// add it to the JPanel
 		die1TextField = new JTextField(2); 
 		die1TextField.setEditable(false);
-		die1TextField.setMaximumSize(new Dimension(50, 50));
 		labelAndTextPanelRow1.add(die1TextField);
 		
-		// add some spacing between die1 text field and die 2 jlabel
-		labelAndTextPanelRow1.add(Box.createRigidArea(new Dimension(30, 0)));
-		
-		// add die 2 JLabel to JPanel
 		die2Label = new JLabel("Die Two:");
 		labelAndTextPanelRow1.add(die2Label);
 		
-		// create die2 text field. Set it to not editable and add maximum size,
-		// otherwise it will be assigned as much space as it is available.
-		// add it to JPanel
 		die2TextField = new JTextField(2);
 		die2TextField.setEditable(false);
-		die2TextField.setMaximumSize(new Dimension(50, 50));	
 		labelAndTextPanelRow1.add(die2TextField);
 		
-		// ================================================================================
-		// LABELS AND TEXTFIELDS ROW 1 END
-		// ================================================================================	
-		
-		
-		// ================================================================================
-		// LABELS AND TEXTFIELDS ROW 2 START
-		// ================================================================================	
-		// add some clever empty areas so the text is aligned
-		// then creating the JLabel and adding it to the JPanel
-		labelAndTextPanelRow2.add(Box.createRigidArea(new Dimension(10, 0)));
 		dieSumLabel = new JLabel("Dice Sum:");
 		labelAndTextPanelRow2.add(dieSumLabel);
 		
-		// add space between dice sum JLabel and dice sum JTextField 
-		labelAndTextPanelRow2.add(Box.createRigidArea(new Dimension(10, 0)));
-		
-		// create dice sum text field. Set it to not editable and add maximum size,
-		// otherwise it will be assigned as much space as it is available.
-		// add it to JPanel
 		dieSumTextField = new JTextField(2);
 		dieSumTextField.setEditable(false);
-		dieSumTextField.setMaximumSize(new Dimension(50, 50));;
 		labelAndTextPanelRow2.add(dieSumTextField);
 
-		// add some spacing between dice sum text field and point jlable
-		labelAndTextPanelRow2.add(Box.createRigidArea(new Dimension(30, 0)));
-		
-		// add point JLabel to JPanel
-		pointLabel = new JLabel("Point:");
+		pointLabel = new JLabel("Point:     ");
 		labelAndTextPanelRow2.add(pointLabel);
 		
-		// create point text field. Set it to not editable and add maximum size,
-		// otherwise it will be assigned as much space as it is available.
 		pointTextField = new JTextField(2);
 		pointTextField.setEditable(false);
-		pointTextField.setMaximumSize(new Dimension(50, 50));
-		
-		// before adding the point to the JPanel set an empty space between the text field
-		// and the end of the panel
-		labelAndTextPanelRow2.add(Box.createRigidArea(new Dimension(20, 0)));
-		
-		// now add the point to the panel
 		labelAndTextPanelRow2.add(pointTextField);
-		
-		// ================================================================================
-		// LABELS AND TEXTFIELDS ROW 2 END
-		// ================================================================================	
 
-		// add both rows to the JPanel that will hold the labels and text
+		// add both rows to the JPanel that will hodl the labels and text
 		labelAndTextPanel.add(labelAndTextPanelRow1);
 		labelAndTextPanel.add(labelAndTextPanelRow2);
 		
@@ -234,5 +174,4 @@ public class PlayCraps extends JFrame {
 		// add mainPanel to JFrame
 		add(mainPanel);
 	}
-	
 }
