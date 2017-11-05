@@ -3,14 +3,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -55,7 +58,13 @@ public class PlayCraps extends JFrame {
 		 the button and results text
 		 and the image of rolling dice 
 		*/
-		labelAndTextPanel = new JPanel(new GridLayout(2, 1));
+		labelAndTextPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(labelAndTextPanel);
+		labelAndTextPanel.setLayout(layout);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setAutoCreateGaps(true);
+		
+
 		buttonAndResultsPanel = new JPanel(new FlowLayout());
 		rollingDicePanel = new JPanel(new FlowLayout());
 		
@@ -65,8 +74,8 @@ public class PlayCraps extends JFrame {
 		 then both panels are added to one panel,
 		 which is then added to the NORTH position of the main panel
 		*/
-		labelAndTextPanelRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
-		labelAndTextPanelRow2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
+		//labelAndTextPanelRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
+		//labelAndTextPanelRow2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 5));
 
 		/* the button and the display of the results are added to to a grid layout panel
 		 the button and the results are separated in their own panels.
@@ -82,37 +91,50 @@ public class PlayCraps extends JFrame {
 		 text fields will be only 2 columns wide. A die only has one digit
 		 text fields will not be editable. User don't need to type anything 
 		*/
-		die1Label = new JLabel("Die One:  ");
-		labelAndTextPanelRow1.add(die1Label);
+		die1Label = new JLabel("Die One:");
+
 
 		die1TextField = new JTextField(2); 
 		die1TextField.setEditable(false);
-		labelAndTextPanelRow1.add(die1TextField);
+
 		
 		die2Label = new JLabel("Die Two:");
-		labelAndTextPanelRow1.add(die2Label);
+
 		
 		die2TextField = new JTextField(2);
 		die2TextField.setEditable(false);
-		labelAndTextPanelRow1.add(die2TextField);
+
 		
 		dieSumLabel = new JLabel("Dice Sum:");
-		labelAndTextPanelRow2.add(dieSumLabel);
+
 		
 		dieSumTextField = new JTextField(2);
 		dieSumTextField.setEditable(false);
-		labelAndTextPanelRow2.add(dieSumTextField);
 
-		pointLabel = new JLabel("Point:     ");
-		labelAndTextPanelRow2.add(pointLabel);
+
+		pointLabel = new JLabel("Point:");
+
 		
 		pointTextField = new JTextField(2);
 		pointTextField.setEditable(false);
-		labelAndTextPanelRow2.add(pointTextField);
 
-		// add both rows to the JPanel that will hodl the labels and text
-		labelAndTextPanel.add(labelAndTextPanelRow1);
-		labelAndTextPanel.add(labelAndTextPanelRow2);
+		layout.linkSize(SwingConstants.HORIZONTAL, die1TextField ,die2TextField, dieSumTextField, pointTextField);
+		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					.addGroup(layout.createSequentialGroup()
+							.addComponent(die1Label)
+							.addComponent(die1TextField)
+							.addComponent(die2Label)
+							.addComponent(die2TextField)))	
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+					.addGroup(layout.createSequentialGroup()
+							.addComponent(dieSumLabel)
+							.addComponent(dieSumTextField)
+							.addComponent(pointLabel)
+							.addComponent(pointTextField)))	
+			);
+		
+		
 		
 		// add labelsAndTextPanel to mainPanel NORTH
 		mainPanel.add(labelAndTextPanel, BorderLayout.PAGE_START);
