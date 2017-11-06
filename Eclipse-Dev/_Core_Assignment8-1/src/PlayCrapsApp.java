@@ -19,7 +19,7 @@ public class PlayCrapsApp {
 	private static void createAndShowGUI() {
 		PlayCraps playCrapsFrame = new PlayCraps("Play Craps!");
 		playCrapsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		playCrapsFrame.setResizable(false);
+		playCrapsFrame.setResizable(true);
 		playCrapsFrame.setVisible(true);
 		playCrapsFrame.pack();
 		

@@ -119,6 +119,7 @@ public class PlayCraps extends JFrame {
 		pointTextField.setEditable(false);
 
 		layout.linkSize(SwingConstants.HORIZONTAL, die1TextField ,die2TextField, dieSumTextField, pointTextField);
+		
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					.addGroup(layout.createSequentialGroup()
@@ -134,7 +135,7 @@ public class PlayCraps extends JFrame {
 							.addComponent(pointTextField)))	
 			);
 		
-		
+		labelAndTextPanel.repaint();
 		
 		// add labelsAndTextPanel to mainPanel NORTH
 		mainPanel.add(labelAndTextPanel, BorderLayout.PAGE_START);

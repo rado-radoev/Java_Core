@@ -279,10 +279,7 @@ public class ControlFrame extends JFrame {
 				bar.remove(colorMenu);
 
 				// remove old panel, so no stale panels appear when the menu is clicked
-				mainPanel.remove(drawPanel);
-				mainPanel.remove(calcPanel);
-				mainPanel.remove(widthJSlider);
-				mainPanel.remove(imagePanel);
+				cleanMainPanel();
 
 				// add the sound Menu to the Menu bar
 				bar.add(soundMenu);
@@ -449,12 +446,11 @@ public class ControlFrame extends JFrame {
 				// clear all other menues, except File Menu
 				bar.add(imageMenu);
 				bar.remove(colorMenu);
+				bar.remove(soundMenu);
 
 				// clear out the JPanel from any other methods
-				mainPanel.remove(drawPanel);
-				mainPanel.remove(calcPanel);
-				mainPanel.remove(widthJSlider);
-
+				cleanMainPanel();
+				
 				// allow the user to select the image to display
 				picName = FileChooser.pickAFile();
 				// before displaying the image check if the cancel is not clicked
@@ -583,18 +579,15 @@ public class ControlFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// remove other panels
-				mainPanel.remove(calcPanel);
-				mainPanel.remove(drawPanel);
-				mainPanel.remove(imagePanel);
-				mainPanel.remove(soundPanel);
-				mainPanel.remove(decodePanel);
-
+				cleanMainPanel();
+				
 				// remove other menus
 				bar.remove(soundMenu);
 				bar.remove(colorMenu);
 				bar.remove(imageMenu);
 
 				// get a text file to encrypt
+				JOptionPane.showMessageDialog(null, "Select text file to encode");
 				String sourceFileName = FileChooser.pickAFile();
 
 				String dir = null;
@@ -606,6 +599,7 @@ public class ControlFrame extends JFrame {
 				
 
 				// get a picutre to encode to
+				JOptionPane.showMessageDialog(null, "Select picture to encode to");
 				Picture pictureToEncodeTo = new Picture(FileChooser.pickAFile());
 
 				// get the target file
@@ -640,11 +634,8 @@ public class ControlFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// remove other panels
-				mainPanel.remove(calcPanel);
-				mainPanel.remove(drawPanel);
-				mainPanel.remove(imagePanel);
-				mainPanel.remove(soundPanel);
-				mainPanel.remove(encodePanel);
+				cleanMainPanel();
+				
 
 				// remove other menus
 				bar.remove(soundMenu);
@@ -760,6 +751,12 @@ public class ControlFrame extends JFrame {
 			}	
 		}
 		
+	}
+	
+	private void cleanMainPanel() {
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+		mainPanel.repaint();
 	}
 	
 }
