@@ -34,6 +34,7 @@ public class ControlFrame extends JFrame {
 	private final JPanel soundPanel;
 	private final JPanel encodePanel;
 	private final JPanel decodePanel;
+	final JMenuBar bar;
 	private DrawImageControlPanel imagePanel; // *** modified code
 	private JSlider widthJSlider;
 	private JTextField xValTextField;
@@ -86,7 +87,7 @@ public class ControlFrame extends JFrame {
 
 		this.setContentPane(mainPanel);
 
-		final JMenuBar bar = new JMenuBar(); // Create a JMenuBar so we can attach menus to it.
+		bar = new JMenuBar(); // Create a JMenuBar so we can attach menus to it.
 
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('F');
@@ -196,9 +197,8 @@ public class ControlFrame extends JFrame {
 		calcPanelItem.setMnemonic('C');
 		fileMenu.add(calcPanelItem);
 		calcPanelItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				bar.remove(colorMenu);
-				bar.remove(imageMenu);
+			public void actionPerformed(ActionEvent event) {	
+				removeMenuItems(colorMenu,imageMenu);
 				mainPanel.remove(drawPanel);
 				mainPanel.remove(widthJSlider);
 				mainPanel.remove(imagePanel);
@@ -231,10 +231,11 @@ public class ControlFrame extends JFrame {
 		JMenuItem drawPanelItem = new JMenuItem("DrawPanel");
 		drawPanelItem.setMnemonic('D');
 		fileMenu.add(drawPanelItem);
+		cleanMainPanel();
 		drawPanelItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				bar.add(colorMenu);
-				bar.remove(imageMenu);
+				removeMenuItems(imageMenu, soundMenu);
 				mainPanel.remove(calcPanel);
 				mainPanel.remove(imagePanel);
 				drawPanel.setBackground(Color.WHITE);
@@ -275,8 +276,7 @@ public class ControlFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// remove menus from previous methods in case they are shown
-				bar.remove(imageMenu);
-				bar.remove(colorMenu);
+				removeMenuItems(colorMenu, imageMenu);
 
 				// remove old panel, so no stale panels appear when the menu is clicked
 				cleanMainPanel();
@@ -284,7 +284,7 @@ public class ControlFrame extends JFrame {
 				// add the sound Menu to the Menu bar
 				bar.add(soundMenu);
 				// allow the user to select the file to open
-				soundName = FileChooser.pickAFile();
+				soundName = FileChooser.pickAFile();				
 				// assign the chosen sound to the sound variable
 				sound = new Sound(soundName);
 
@@ -444,10 +444,11 @@ public class ControlFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) { // Beginning anonymous inner class
 				// clear all other menues, except File Menu
-				bar.add(imageMenu);
-				bar.remove(colorMenu);
-				bar.remove(soundMenu);
+				removeMenuItems(colorMenu, soundMenu);
 
+				// add image menu
+				bar.add(imageMenu);
+				
 				// clear out the JPanel from any other methods
 				cleanMainPanel();
 				
@@ -582,9 +583,7 @@ public class ControlFrame extends JFrame {
 				cleanMainPanel();
 				
 				// remove other menus
-				bar.remove(soundMenu);
-				bar.remove(colorMenu);
-				bar.remove(imageMenu);
+				removeMenuItems(soundMenu, colorMenu, imageMenu);
 
 				// get a text file to encrypt
 				JOptionPane.showMessageDialog(null, "Select text file to encode");
@@ -638,9 +637,7 @@ public class ControlFrame extends JFrame {
 				
 
 				// remove other menus
-				bar.remove(soundMenu);
-				bar.remove(colorMenu);
-				bar.remove(imageMenu);
+				removeMenuItems(soundMenu, colorMenu, imageMenu);
 
 				// get the picture to be decrypted
 				Picture picture = new Picture(FileChooser.pickAFile());
@@ -757,6 +754,12 @@ public class ControlFrame extends JFrame {
 		mainPanel.removeAll();
 		mainPanel.revalidate();
 		mainPanel.repaint();
+	}
+	
+	private void removeMenuItems(JMenuItem...items) {
+		for (JMenuItem item : items) {
+			bar.remove(item);
+		}
 	}
 	
 }
