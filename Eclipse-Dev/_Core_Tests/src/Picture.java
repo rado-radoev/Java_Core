@@ -113,6 +113,25 @@ public class Picture extends SimplePicture
 	  
   }
   
+  public static void arrayExample() {
+	  // declaring vars and creating picture object
+	  Picture picture = new Picture(FileChooser.pickAFile());
+	  Pixel[] pixelArray = picture.getPixels();
+	  
+	  // two dimensional array whose goal is to store red green blue
+	  int[][] multiArray = new int[pixelArray.length][3];
+	  
+	  // loop throuhg pixelArray and get each color
+	  for (int i = 0; i < pixelArray.length; i++) {
+		Pixel targetPixel = pixelArray[i];
+		
+		// plug in values for red green blue
+		multiArray[i][0] = targetPixel.getRed();
+		multiArray[i][1] = targetPixel.getGreen();
+		multiArray[i][2] = targetPixel.getBlue();
+	}
+  }
+  
   /**
    * Method to draw an object onto another object
    * @param source

@@ -8,7 +8,7 @@ public class PixelTester {
 //		pic.drawRainbow();
 //		pic.explore();
 		
-		testMethod23();
+		Picture.arrayExample();
 	}
 	
 	public static void testMethod25() {
