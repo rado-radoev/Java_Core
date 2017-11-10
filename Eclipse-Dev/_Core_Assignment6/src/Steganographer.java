@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.corba.se.impl.protocol.InfoOnlyServantCacheLocalCRDImpl;
-
 /**
  * Class that encodes text from a file to a picture and decodes 
  * text from a picture to the screen
