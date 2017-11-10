@@ -111,11 +111,11 @@ public class Steganographer {
 		Steganographer sten = 
 				new Steganographer();
 		
-		Picture butterfly = 
+		Picture beach = 
 				new Picture(FileChooser.getMediaPath("beach.jpg"));
 		
-		sten.encode(FileChooser.getMediaPath("parasites.txt"), butterfly, FileChooser.getMediaPath("encoded-butterfly1"));
-		Picture pic = new Picture(FileChooser.getMediaPath("encoded-butterfly1.png"));
+		sten.encode(FileChooser.getMediaPath("parasites.txt"), beach, FileChooser.getMediaPath("encoded-beach"));
+		Picture pic = new Picture(FileChooser.getMediaPath("encoded-beach.png"));
 		
 		pic.explore();
 		sten.decode(pic);
