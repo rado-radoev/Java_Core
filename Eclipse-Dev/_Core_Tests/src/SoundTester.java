@@ -3,12 +3,12 @@ public class SoundTester {
 
 	public static void main(String[] args) throws SoundException {
 
-		String silence = FileChooser.getMediaPath("Elliot-hello.wav");
-		Sound target = new Sound(silence);
-		target.explore();
-		target.blockingPlay();
-		target.changeFreq(0.75);
-		target.explore();
+		//String silence = FileChooser.getMediaPath("Elliot-hello.wav");
+		Sound target = new Sound("http://stream.metacast.eu/nrj.ogg");
+		//target.explore();
+		//target.blockingPlay();
+		//target.changeFreq(0.75);
+		//target.explore();
 		target.play();
 		
 //		String fileName = FileChooser.getMediaPath("thisisatest.wav");
